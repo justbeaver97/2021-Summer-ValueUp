@@ -1,3 +1,5 @@
+// 거리만큼 배치해주는 페이지
+
 /*
  * Copyright 2018 Google LLC. All Rights Reserved.
  *
@@ -66,7 +68,7 @@ public class PlaceActivity extends AppCompatActivity {
     private static final double MIN_OPENGL_VERSION = 3.0; // Open grapic Library version
 
     private ArFragment arFragment; // ARCORE 기본 구성 사용
-    private Renderable renderable; // sceneform rendering basic class
+    private Renderable renderable; // sceneform rendering basic class -> rendering 가능한 3D model 생성
 
 
     private static class AnimationInstance {
@@ -86,7 +88,7 @@ public class PlaceActivity extends AppCompatActivity {
         }
     }
 
-    private final Set<AnimationInstance> animators = new ArraySet<>();
+    private final Set<AnimationInstance> animators = new ArraySet<>(); // animationInstance 담을 animators 생성
 
     private final List<Color> colors =
             Arrays.asList(
@@ -98,7 +100,7 @@ public class PlaceActivity extends AppCompatActivity {
                     new Color(0, 1, 1, 1),
                     new Color(1, 0, 1, 1),
                     new Color(1, 1, 1, 1));
-    private int nextColor = 0;
+    private int nextColor = 0; // color index
 
 
     @Override
@@ -123,7 +125,7 @@ public class PlaceActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        if(length <= distance){
+        if(length <= distance){ // 배치모드
             builder.setMessage("배치가 가능합니다");
 
             builder.setPositiveButton("배치", new DialogInterface.OnClickListener() {
@@ -145,7 +147,7 @@ public class PlaceActivity extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-            arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
+            arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // arfragment
 
             WeakReference<PlaceActivity> weakActivity = new WeakReference<>(this);
 
@@ -173,20 +175,21 @@ public class PlaceActivity extends AppCompatActivity {
                                 return null;
                             });
 
-            arFragment.setOnTapArPlaneListener(
+            arFragment.setOnTapArPlaneListener( // setOnTapPlainListener -> ARCORE 평면(Plane) 탭 할때 호출할 콜백을 정의
                     (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                         if (renderable == null) {
                             return;
                         }
 
                         // Create the Anchor.
-                        Anchor anchor = hitResult.createAnchor();
-                        AnchorNode anchorNode = new AnchorNode(anchor);
+                        Anchor anchor = hitResult.createAnchor(); // plane tap시 hitresult 에서 anchor 생성
+                        AnchorNode anchorNode = new AnchorNode(anchor); // 공간에 anchor을 기반으로 자동으로 배치되는 Node(Node : 하나의 오브젝트가 차지하는 영역)
                         anchorNode.setParent(arFragment.getArSceneView().getScene());
+                        // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
 
                         // Create the transformable model and add it to the anchor.
-                        TransformableNode model = new TransformableNode(arFragment.getTransformationSystem());
-                        model.setRenderable(renderable);
+                        TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // gestures Node ( selected, translated, rotated ...)
+                        model.setRenderable(renderable); // 해당 model에 표시할 renderable 설정
 
                         float wantScale = 0.00007f * distance;
                         model.getScaleController().setMaxScale(wantScale);
@@ -196,13 +199,15 @@ public class PlaceActivity extends AppCompatActivity {
                         model.setParent(anchorNode);
                         model.select();
 
-                        FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset();
+
+                        // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
+                        FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
                         if (filamentAsset.getAnimator().getAnimationCount() > 0) {
-                            animators.add(new PlaceActivity.AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime()));
+                            animators.add(new PlaceActivity.AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // animators에 starttime, duration, index SET 형태로 저장
                         }
 
                         Color color = colors.get(nextColor);
-                        nextColor++;
+                        nextColor++; // color index
                         for (int i = 0; i < renderable.getSubmeshCount(); ++i) {
                             Material material = renderable.getMaterial(i);
                             material.setFloat4("baseColorFactor", color);
@@ -213,10 +218,10 @@ public class PlaceActivity extends AppCompatActivity {
             arFragment
                     .getArSceneView()
                     .getScene()
-                    .addOnUpdateListener(
+                    .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 listener 추가
                             frameTime -> {
                                 Long time = System.nanoTime();
-                                for (PlaceActivity.AnimationInstance animator : animators) {
+                                for (PlaceActivity.AnimationInstance animator : animators) { //for문 -> animators
                                     animator.animator.applyAnimation(
                                             animator.index,
                                             (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
@@ -227,14 +232,14 @@ public class PlaceActivity extends AppCompatActivity {
 
 
 
-        }else{
-
+        }else{ // 배치 불가
             builder.setMessage("배치가 불가능합니다. 다른 장소를 선택하세요. (가구 길이: " + length + " cm)");
 
             builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent pageIntent = new Intent(PlaceActivity.this, DistanceActivity.class);
+                    // error -> 앱 중단 문제 , 재 측정 불가
                     startActivity(pageIntent);
                 }
             });
@@ -249,7 +254,7 @@ public class PlaceActivity extends AppCompatActivity {
 
     }
 
-    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
+    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // requirements check
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later");
             Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();

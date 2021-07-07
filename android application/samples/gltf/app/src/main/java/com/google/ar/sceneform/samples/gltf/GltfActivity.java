@@ -1,3 +1,5 @@
+// 일반 배치 모드
+
 /*
  * Copyright 2018 Google LLC. All Rights Reserved.
  *
@@ -122,7 +124,7 @@ public class GltfActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Toast.makeText(getApplicationContext(),"거리 측정페이지입니다.",Toast.LENGTH_LONG).show();
-                Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class);
+                Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class); // 거리측정페이지 : DistanceActivity
                 pageIntent.putExtra("length", length);
                 startActivity(pageIntent);
             }
@@ -162,7 +164,7 @@ public class GltfActivity extends AppCompatActivity {
                             return null;
                         });
 
-        arFragment.setOnTapArPlaneListener(
+        arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult -> Anchor
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (renderable == null) {
                         return;
@@ -211,14 +213,7 @@ public class GltfActivity extends AppCompatActivity {
                         });
     }
 
-    /**
-     * Returns false and displays an error message if Sceneform can not run, true if Sceneform can run
-     * on this device.
-     *
-     * <p>Sceneform requires Android N on the device as well as OpenGL 3.0 capabilities.
-     *
-     * <p>Finishes the activity if Sceneform can not run
-     */
+
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
         if (Build.VERSION.SDK_INT < VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later");

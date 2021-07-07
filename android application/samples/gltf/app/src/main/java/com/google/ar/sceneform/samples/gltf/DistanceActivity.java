@@ -1,3 +1,5 @@
+// 거리측정 페이지
+
 package com.google.ar.sceneform.samples.gltf;
 
 
@@ -29,14 +31,14 @@ import java.util.Objects;
 
 public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdateListener {
 
-
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ArFragment arFragment;
-    private Anchor[] currentAnchor = new Anchor[2];
+    private Anchor[] currentAnchor = new Anchor[2]; // anchor 배열 선언 (anchor : 실제 세계에서 고정된 위치와 방향 설명)
     private AnchorNode[] currentAnchorNode = new AnchorNode[2];
-    private TextView tvDistance;
+    // anchorNode 배열 선언 (Node : 하나의 object가 차지하는 영역, 즉 anchorNode는 하나의 anchor object가 차지하는 영역)
+    private TextView tvDistance; // Distance 보여주는 textview
     ModelRenderable cubeRenderable;
     public static int cnt = 0;
 
@@ -44,29 +46,29 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!checkIsSupportedDeviceOrFinish(this)) {
+        if (!checkIsSupportedDeviceOrFinish(this)) { // requirements check
             Toast.makeText(getApplicationContext(), "Device not supported", Toast.LENGTH_LONG).show();
         }
 
         setContentView(R.layout.activity_distance);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-        tvDistance = findViewById(R.id.tvDistance);
+        tvDistance = findViewById(R.id.tvDistance); // Distance Textview
 
 
         initModel();
 
-        arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
+        arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> { // Plane의 white dot tap하면 function 실행 -> hitresult -> Anchor
             if (cubeRenderable == null)
                 return;
 
 
-            // Creating Anchor.
+            // Creating Anchor (Anchor : fixed location and orientation in real world -> rendering 3D model in Anchor)
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-            clearAnchor();
+            clearAnchor(); // cnt == 2일경우 initialize
 
             currentAnchor[cnt] = anchor;
             currentAnchorNode[cnt] = anchorNode;
@@ -79,13 +81,11 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
             arFragment.getArSceneView().getScene().addOnUpdateListener(this);
             arFragment.getArSceneView().getScene().addChild(anchorNode);
             node.select();
-
-
         });
 
     }
 
-    public boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
+    public boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // requirements checked
 
         String openGlVersionString =
                 ((ActivityManager) Objects.requireNonNull(activity.getSystemService(Context.ACTIVITY_SERVICE)))
@@ -112,9 +112,8 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
                         });
     }
 
-    private void clearAnchor() {
-
-        if(cnt == 2){
+    private void clearAnchor() { // clear Anchor
+        if(cnt == 2){ // tap hitresult가 2개 초과일 수 없음
             for(int i=0; i<2; i++){
                 currentAnchor[i] = null;
                 if (currentAnchorNode[i] != null) {
@@ -124,7 +123,7 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
                     currentAnchorNode = null;
                 }
             }
-            cnt = 0;
+            cnt = 0; // cnt, currentAnchor, currentAnchorNode initialize
         }
     }
 
