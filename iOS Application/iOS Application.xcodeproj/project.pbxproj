@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,20 @@
 		DC386CD5269402EF003AED73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC386CD4269402EF003AED73 /* Preview Assets.xcassets */; };
 		DC386CE0269402EF003AED73 /* iOS_ApplicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC386CDF269402EF003AED73 /* iOS_ApplicationTests.swift */; };
 		DC386CEB269402EF003AED73 /* iOS_ApplicationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC386CEA269402EF003AED73 /* iOS_ApplicationUITests.swift */; };
+		DC7922F626943CB600293602 /* chair_swan.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC7922F326943CB300293602 /* chair_swan.usdz */; };
+		DC7922F726943CB600293602 /* pot_plant.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC7922F426943CB500293602 /* pot_plant.usdz */; };
+		DC7922F826943CB600293602 /* tv_retro.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC7922F526943CB600293602 /* tv_retro.usdz */; };
+		DC7922FA26943E9300293602 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7922F926943E9300293602 /* ControlView.swift */; };
+		DC7922FC2694472F00293602 /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7922FB2694472F00293602 /* BrowseView.swift */; };
+		DC7922FE269458C900293602 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7922FD269458C900293602 /* Model.swift */; };
+		DC79230326945C2300293602 /* cup_saucer_set.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC7922FF26945C1D00293602 /* cup_saucer_set.usdz */; };
+		DC79230426945C2300293602 /* flower_tulip.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC79230026945C1F00293602 /* flower_tulip.usdz */; };
+		DC79230526945C2300293602 /* fender_stratocaster.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC79230126945C2100293602 /* fender_stratocaster.usdz */; };
+		DC79230626945C2300293602 /* gramophone.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DC79230226945C2300293602 /* gramophone.usdz */; };
+		DC7923082694659C00293602 /* PlacementSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7923072694659B00293602 /* PlacementSettings.swift */; };
+		DC79230A2694672800293602 /* PlacementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7923092694672800293602 /* PlacementView.swift */; };
+		DC79230D269469EC00293602 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = DC79230C269469EC00293602 /* FocusEntity */; };
+		DC79230F26946A7C00293602 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC79230E26946A7C00293602 /* CustomARView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +59,19 @@
 		DC386CE6269402EF003AED73 /* iOS ApplicationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS ApplicationUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC386CEA269402EF003AED73 /* iOS_ApplicationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_ApplicationUITests.swift; sourceTree = "<group>"; };
 		DC386CEC269402EF003AED73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC7922F326943CB300293602 /* chair_swan.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = chair_swan.usdz; sourceTree = "<group>"; };
+		DC7922F426943CB500293602 /* pot_plant.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = pot_plant.usdz; sourceTree = "<group>"; };
+		DC7922F526943CB600293602 /* tv_retro.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = tv_retro.usdz; sourceTree = "<group>"; };
+		DC7922F926943E9300293602 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
+		DC7922FB2694472F00293602 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
+		DC7922FD269458C900293602 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		DC7922FF26945C1D00293602 /* cup_saucer_set.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = cup_saucer_set.usdz; sourceTree = "<group>"; };
+		DC79230026945C1F00293602 /* flower_tulip.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = flower_tulip.usdz; sourceTree = "<group>"; };
+		DC79230126945C2100293602 /* fender_stratocaster.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = fender_stratocaster.usdz; sourceTree = "<group>"; };
+		DC79230226945C2300293602 /* gramophone.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = gramophone.usdz; sourceTree = "<group>"; };
+		DC7923072694659B00293602 /* PlacementSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementSettings.swift; sourceTree = "<group>"; };
+		DC7923092694672800293602 /* PlacementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementView.swift; sourceTree = "<group>"; };
+		DC79230E26946A7C00293602 /* CustomARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC79230D269469EC00293602 /* FocusEntity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,8 +125,15 @@
 			children = (
 				DC386CCD269402EC003AED73 /* iOS_ApplicationApp.swift */,
 				DC386CCF269402EC003AED73 /* ContentView.swift */,
+				DC7922F926943E9300293602 /* ControlView.swift */,
+				DC7922FB2694472F00293602 /* BrowseView.swift */,
+				DC79230E26946A7C00293602 /* CustomARView.swift */,
+				DC7923072694659B00293602 /* PlacementSettings.swift */,
+				DC7923092694672800293602 /* PlacementView.swift */,
+				DC7922FD269458C900293602 /* Model.swift */,
 				DC386CD1269402EF003AED73 /* Assets.xcassets */,
 				DC386CD6269402EF003AED73 /* Info.plist */,
+				DC7922F226943C8B00293602 /* 3D Assets */,
 				DC386CD3269402EF003AED73 /* Preview Content */,
 			);
 			path = "iOS Application";
@@ -130,6 +165,20 @@
 			path = "iOS ApplicationUITests";
 			sourceTree = "<group>";
 		};
+		DC7922F226943C8B00293602 /* 3D Assets */ = {
+			isa = PBXGroup;
+			children = (
+				DC7922FF26945C1D00293602 /* cup_saucer_set.usdz */,
+				DC79230126945C2100293602 /* fender_stratocaster.usdz */,
+				DC79230026945C1F00293602 /* flower_tulip.usdz */,
+				DC79230226945C2300293602 /* gramophone.usdz */,
+				DC7922F326943CB300293602 /* chair_swan.usdz */,
+				DC7922F426943CB500293602 /* pot_plant.usdz */,
+				DC7922F526943CB600293602 /* tv_retro.usdz */,
+			);
+			path = "3D Assets";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -146,6 +195,9 @@
 			dependencies = (
 			);
 			name = "iOS Application";
+			packageProductDependencies = (
+				DC79230C269469EC00293602 /* FocusEntity */,
+			);
 			productName = "iOS Application";
 			productReference = DC386CCA269402EC003AED73 /* iOS Application.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +269,9 @@
 				Base,
 			);
 			mainGroup = DC386CC1269402EC003AED73;
+			packageReferences = (
+				DC79230B269469EC00293602 /* XCRemoteSwiftPackageReference "FocusEntity" */,
+			);
 			productRefGroup = DC386CCB269402EC003AED73 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,8 +288,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC7922F626943CB600293602 /* chair_swan.usdz in Resources */,
+				DC79230626945C2300293602 /* gramophone.usdz in Resources */,
 				DC386CD5269402EF003AED73 /* Preview Assets.xcassets in Resources */,
+				DC79230426945C2300293602 /* flower_tulip.usdz in Resources */,
+				DC79230326945C2300293602 /* cup_saucer_set.usdz in Resources */,
 				DC386CD2269402EF003AED73 /* Assets.xcassets in Resources */,
+				DC7922F826943CB600293602 /* tv_retro.usdz in Resources */,
+				DC79230526945C2300293602 /* fender_stratocaster.usdz in Resources */,
+				DC7922F726943CB600293602 /* pot_plant.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,8 +321,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC7923082694659C00293602 /* PlacementSettings.swift in Sources */,
+				DC7922FE269458C900293602 /* Model.swift in Sources */,
+				DC7922FC2694472F00293602 /* BrowseView.swift in Sources */,
 				DC386CD0269402EC003AED73 /* ContentView.swift in Sources */,
+				DC7922FA26943E9300293602 /* ControlView.swift in Sources */,
 				DC386CCE269402EC003AED73 /* iOS_ApplicationApp.swift in Sources */,
+				DC79230F26946A7C00293602 /* CustomARView.swift in Sources */,
+				DC79230A2694672800293602 /* PlacementView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,6 +648,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DC79230B269469EC00293602 /* XCRemoteSwiftPackageReference "FocusEntity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maxxfrazer/FocusEntity";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DC79230C269469EC00293602 /* FocusEntity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC79230B269469EC00293602 /* XCRemoteSwiftPackageReference "FocusEntity" */;
+			productName = FocusEntity;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DC386CC2269402EC003AED73 /* Project object */;
 }
