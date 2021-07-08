@@ -71,7 +71,7 @@ public class PlaceActivity extends AppCompatActivity {
     private Renderable renderable; // sceneform rendering basic class -> rendering 가능한 3D model 생성
 
 
-    private static class AnimationInstance {
+    private static class AnimationInstance { // animation을 만들기 위해 사용되는 데이터들
         Animator animator;
         Long startTime;
         float duration;
@@ -88,7 +88,7 @@ public class PlaceActivity extends AppCompatActivity {
         }
     }
 
-    private final Set<AnimationInstance> animators = new ArraySet<>(); // animationInstance 담을 animators 생성
+    private final Set<AnimationInstance> animators = new ArraySet<>(); // animationInstance 저장하기 위해 ArraySet 생성
 
     private final List<Color> colors =
             Arrays.asList(
@@ -100,24 +100,25 @@ public class PlaceActivity extends AppCompatActivity {
                     new Color(0, 1, 1, 1),
                     new Color(1, 0, 1, 1),
                     new Color(1, 1, 1, 1));
-    private int nextColor = 0; // color index
+    private int nextColor = 0; // basic color
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!checkIsSupportedDeviceOrFinish(this)) {
+        if (!checkIsSupportedDeviceOrFinish(this)) { // requirements check
             return;
         }
-        setContentView(R.layout.activity_place);
+        setContentView(R.layout.activity_place); // activity_place.xml
 
 
         Intent intent = getIntent();
         Float distance = (Float) intent.getSerializableExtra("distance");
+//        int length = (int) intent.getSerializableExtra("length"); // get length, distance
 
-//        int length = (int) intent.getSerializableExtra("length");
-        int length = 30; // 가구 길이 임의로 지정
+
+        int length = 30; // 가구 길이 임의로 지정 for testing
         TextView text_distance = (TextView) findViewById(R.id.text_distance);
 
         text_distance.setText("측정 거리: " + distance + " cm");
@@ -125,7 +126,7 @@ public class PlaceActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        if(length <= distance){ // 배치모드
+        if (length <= distance){ // 배치모드
             builder.setMessage("배치가 가능합니다");
 
             builder.setPositiveButton("배치", new DialogInterface.OnClickListener() {
@@ -138,7 +139,7 @@ public class PlaceActivity extends AppCompatActivity {
             builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent pageIntent = new Intent(PlaceActivity.this, DistanceActivity.class);
+                    Intent pageIntent = new Intent(PlaceActivity.this, DistanceActivity.class); // 거리 재측정 -> DistanceActivity
                     startActivity(pageIntent);
                 //    Toast.makeText(getApplicationContext(), "배치 안하고 출력", Toast.LENGTH_SHORT).show();
                 }
@@ -147,16 +148,16 @@ public class PlaceActivity extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-            arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // arfragment
+            arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // ux_fragment -> fragment manager 불러옴 -> ARFragment
 
-            WeakReference<PlaceActivity> weakActivity = new WeakReference<>(this);
+            WeakReference<PlaceActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
 
-            ModelRenderable.builder() // loading the glTF file and creating a source object for ModelRenderable.Builder that creates the renderable object
+            ModelRenderable.builder() // Sceneform rendering engine
                     .setSource(
                             this,
                             Uri.parse(
-                                    "https://raw.githubusercontent.com/justbeaver97/2021-1-CapstoneDesign/master/threejs_tutorial/models/746525_close.glb"))
-                    .setIsFilamentGltf(true)
+                                    "https://raw.githubusercontent.com/justbeaver97/2021-1-CapstoneDesign/master/threejs_tutorial/models/746525_close.glb")) // our .glb model
+                    .setIsFilamentGltf(true) // gltf load
                     .build()
                     .thenAccept(
                             modelRenderable -> {
@@ -175,7 +176,7 @@ public class PlaceActivity extends AppCompatActivity {
                                 return null;
                             });
 
-            arFragment.setOnTapArPlaneListener( // setOnTapPlainListener -> ARCORE 평면(Plane) 탭 할때 호출할 콜백을 정의
+            arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
                     (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                         if (renderable == null) {
                             return;
@@ -188,14 +189,14 @@ public class PlaceActivity extends AppCompatActivity {
                         // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
 
                         // Create the transformable model and add it to the anchor.
-                        TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // gestures Node ( selected, translated, rotated ...)
-                        model.setRenderable(renderable); // 해당 model에 표시할 renderable 설정
+                        TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
+                        model.setRenderable(renderable); // set rendering model
 
-                        float wantScale = 0.00007f * distance;
+                        float wantScale = 0.00007f * distance; // distance만큼 Scale값 조정
                         model.getScaleController().setMaxScale(wantScale);
                         model.getScaleController().setMinScale(wantScale/100 *99);
                         model.getRotationController().setEnabled(false);
-                        model.getTranslationController().setEnabled(false);
+                        model.getTranslationController().setEnabled(false); // 회전, 조작 false
                         model.setParent(anchorNode);
                         model.select();
 
@@ -203,10 +204,10 @@ public class PlaceActivity extends AppCompatActivity {
                         // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
                         FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
                         if (filamentAsset.getAnimator().getAnimationCount() > 0) {
-                            animators.add(new PlaceActivity.AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // animators에 starttime, duration, index SET 형태로 저장
+                            animators.add(new PlaceActivity.AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // Array set animators -> add Instance
                         }
 
-                        Color color = colors.get(nextColor);
+                        Color color = colors.get(nextColor); // basic color setting
                         nextColor++; // color index
                         for (int i = 0; i < renderable.getSubmeshCount(); ++i) {
                             Material material = renderable.getMaterial(i);
@@ -218,7 +219,7 @@ public class PlaceActivity extends AppCompatActivity {
             arFragment
                     .getArSceneView()
                     .getScene()
-                    .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 listener 추가
+                    .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
                             frameTime -> {
                                 Long time = System.nanoTime();
                                 for (PlaceActivity.AnimationInstance animator : animators) { //for문 -> animators
