@@ -66,7 +66,6 @@ class Model {
                 print("modelEntity for \(self.name) has been loaded.")
             })
     }
-
 }
 
 struct Models {
@@ -74,25 +73,25 @@ struct Models {
     
     init() {
         // chair
-        let chair_swan = Model(name:"chair_swan", category: .table, scaleCompensation: 0.32/100)
+        let chair_swan = Model(name:"chair_swan", category: .table, scaleCompensation: 0.32)
         
         self.all += [chair_swan]
         
         // deco
-        let fender_stratocaster = Model(name: "fender_stratocaster", category: .deco, scaleCompensation: 0.32/100)
-        let cup_saucer_set = Model(name:"cup_saucer_set", category: .deco, scaleCompensation: 0.32/100)
-        let gramophone = Model(name:"gramophone", category: .deco, scaleCompensation: 0.32/100)
+        let fender_stratocaster = Model(name: "fender_stratocaster", category: .deco, scaleCompensation: 0.32)
+        let cup_saucer_set = Model(name:"cup_saucer_set", category: .deco, scaleCompensation: 0.32)
+        let gramophone = Model(name:"gramophone", category: .deco, scaleCompensation: 0.32)
         
         self.all += [fender_stratocaster, cup_saucer_set, gramophone]
     
         // tv
-        let tv_retro = Model(name:"tv_retro", category: .tv, scaleCompensation: 0.32/100)
+        let tv_retro = Model(name:"tv_retro", category: .tv, scaleCompensation: 0.32)
         
         self.all += [tv_retro]
         
         //others
-        let pot_plant = Model(name:"pot_plant", category: .other, scaleCompensation: 0.32/100)
-        let flower_tulip = Model(name:"flower_tulip", category: .other, scaleCompensation: 0.32/100)
+        let pot_plant = Model(name:"pot_plant", category: .other, scaleCompensation: 0.32)
+        let flower_tulip = Model(name:"flower_tulip", category: .other, scaleCompensation: 0.32)
         
         self.all += [pot_plant, flower_tulip]
     }

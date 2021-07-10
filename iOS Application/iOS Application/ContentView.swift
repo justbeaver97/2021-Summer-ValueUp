@@ -12,13 +12,14 @@ struct ContentView: View {
     @EnvironmentObject var placementSettings: PlacementSettings
     @State private var isControlsVisible: Bool = true
     @State private var showBrowse: Bool = false
+    @State private var showSettings: Bool = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
             ARViewContainer()
             
             if self.placementSettings.selectedModel == nil {
-                ControlView(isControlsVisible: $isControlsVisible, showBrowse: $showBrowse)
+                ControlView(isControlsVisible: $isControlsVisible, showBrowse: $showBrowse, showSettings: $showSettings)
             } else {
                 PlacementView()
             }
@@ -29,10 +30,11 @@ struct ContentView: View {
 
 struct ARViewContainer: UIViewRepresentable{
     @EnvironmentObject var placementSettings: PlacementSettings
+    @EnvironmentObject var sessionSettings: SessionSettings
     
     //UIViewRepresentable은 2개의 func를 필수적으로 지녀야함 - makeUIView, updateUIView
     func makeUIView(context: Context) -> CustomARView {
-        let arView = CustomARView(frame: .zero)
+        let arView = CustomARView(frame: .zero, sessionSettings: sessionSettings)
         
         //subscribe to SceneEvents.Update
         self.placementSettings.sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self, { (event) in
@@ -50,7 +52,7 @@ struct ARViewContainer: UIViewRepresentable{
         arView.focusEntity?.isEnabled = self.placementSettings.selectedModel != nil
         
         // Add model to scene if confirmed for placement
-        if let confirmModel = self.placementSettings.confirmedModel, let modelEntity = confirmModel.modelEntity {
+        if let confirmedModel = self.placementSettings.confirmedModel, let modelEntity = confirmedModel.modelEntity {
             // TODO: Call place method
             self.place(modelEntity, in: arView)
             
@@ -81,5 +83,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(PlacementSettings())
+            .environmentObject(SessionSettings())
     }
 }

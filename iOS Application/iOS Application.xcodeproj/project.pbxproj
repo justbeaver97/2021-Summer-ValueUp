@@ -27,6 +27,9 @@
 		DC79230A2694672800293602 /* PlacementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7923092694672800293602 /* PlacementView.swift */; };
 		DC79230D269469EC00293602 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = DC79230C269469EC00293602 /* FocusEntity */; };
 		DC79230F26946A7C00293602 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC79230E26946A7C00293602 /* CustomARView.swift */; };
+		DC806C9E2695A70700AF46BE /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC806C9D2695A70700AF46BE /* View+Extensions.swift */; };
+		DC806CA02695AA0A00AF46BE /* SessionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC806C9F2695AA0A00AF46BE /* SessionSettings.swift */; };
+		DC806CA22695AAB500AF46BE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC806CA12695AAB500AF46BE /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +75,9 @@
 		DC7923072694659B00293602 /* PlacementSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementSettings.swift; sourceTree = "<group>"; };
 		DC7923092694672800293602 /* PlacementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementView.swift; sourceTree = "<group>"; };
 		DC79230E26946A7C00293602 /* CustomARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
+		DC806C9D2695A70700AF46BE /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		DC806C9F2695AA0A00AF46BE /* SessionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSettings.swift; sourceTree = "<group>"; };
+		DC806CA12695AAB500AF46BE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,13 +130,16 @@
 			isa = PBXGroup;
 			children = (
 				DC386CCD269402EC003AED73 /* iOS_ApplicationApp.swift */,
+				DC7922FB2694472F00293602 /* BrowseView.swift */,
 				DC386CCF269402EC003AED73 /* ContentView.swift */,
 				DC7922F926943E9300293602 /* ControlView.swift */,
-				DC7922FB2694472F00293602 /* BrowseView.swift */,
 				DC79230E26946A7C00293602 /* CustomARView.swift */,
+				DC7922FD269458C900293602 /* Model.swift */,
 				DC7923072694659B00293602 /* PlacementSettings.swift */,
 				DC7923092694672800293602 /* PlacementView.swift */,
-				DC7922FD269458C900293602 /* Model.swift */,
+				DC806C9F2695AA0A00AF46BE /* SessionSettings.swift */,
+				DC806CA12695AAB500AF46BE /* SettingsView.swift */,
+				DC806C9D2695A70700AF46BE /* View+Extensions.swift */,
 				DC386CD1269402EF003AED73 /* Assets.xcassets */,
 				DC386CD6269402EF003AED73 /* Info.plist */,
 				DC7922F226943C8B00293602 /* 3D Assets */,
@@ -322,6 +331,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC7923082694659C00293602 /* PlacementSettings.swift in Sources */,
+				DC806CA02695AA0A00AF46BE /* SessionSettings.swift in Sources */,
+				DC806C9E2695A70700AF46BE /* View+Extensions.swift in Sources */,
 				DC7922FE269458C900293602 /* Model.swift in Sources */,
 				DC7922FC2694472F00293602 /* BrowseView.swift in Sources */,
 				DC386CD0269402EC003AED73 /* ContentView.swift in Sources */,
@@ -329,6 +340,7 @@
 				DC386CCE269402EC003AED73 /* iOS_ApplicationApp.swift in Sources */,
 				DC79230F26946A7C00293602 /* CustomARView.swift in Sources */,
 				DC79230A2694672800293602 /* PlacementView.swift in Sources */,
+				DC806CA22695AAB500AF46BE /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
