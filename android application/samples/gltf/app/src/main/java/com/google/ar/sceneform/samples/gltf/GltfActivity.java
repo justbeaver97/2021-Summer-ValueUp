@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.Button;
 
@@ -58,16 +59,16 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
-/**
- * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
- */
 public class GltfActivity extends AppCompatActivity {
     private static final String TAG = GltfActivity.class.getSimpleName(); // log 띄우기 위해
     private static final double MIN_OPENGL_VERSION = 3.0;
 
+
     private ArFragment arFragment; // ARCORE 기본 구성 사용
-    private Renderable renderable; // 3D object rendering 위함
+    private Renderable renderable; // sceneform rendering basic class -> rendering 가능한 3D model 생성
+    // + gltf file road, rendering -> Modelrenderable의 개체 생성을 처리
 
 
     private static class AnimationInstance { // animation을 만들기 위해 사용되는 데이터들
@@ -113,6 +114,8 @@ public class GltfActivity extends AppCompatActivity {
         } // 지원하는 OpenGL 버전(3.0)이 적합한지, android sdk 버전이 맞는지 확인
 
         setContentView(R.layout.activity_ux);
+        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
 
         // -----
         Intent intent = getIntent();
@@ -138,18 +141,19 @@ public class GltfActivity extends AppCompatActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // ux_fragment -> fragment manager 불러옴 -> ARFragment
 
         WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
+        // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
+        // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
 
-        ModelRenderable.builder() // Sceneform rendering engine
+        ModelRenderable.builder() // Sceneform rendering engine -> gltf 파일 로드 및 개체 생성
                 .setSource(
                         this,
                         Uri.parse(
-//                                newUri))
                                 "https://raw.githubusercontent.com/justbeaver97/2021-1-CapstoneDesign/master/threejs_tutorial/models/746525_close.glb")) // our .glb model
                 .setIsFilamentGltf(true) // gltf load
                 .build()
                 .thenAccept(
                         modelRenderable -> {
-                            GltfActivity activity = weakActivity.get();
+                            GltfActivity activity = weakActivity.get(); // 참조
                             if (activity != null) {
                                 activity.renderable = modelRenderable; // modelRenderable(our .glb file) -> renderable
                             }
@@ -165,6 +169,8 @@ public class GltfActivity extends AppCompatActivity {
 
         arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+                    progress.setVisibility(View.VISIBLE);
+                    System.out.println("--------------------------------------실행--------------------------------------------");
                     if (renderable == null) {
                         return;
                     }
@@ -180,6 +186,7 @@ public class GltfActivity extends AppCompatActivity {
                     model.getScaleController().setMaxScale(0.015f);
                     model.getScaleController().setMinScale(0.005f); // set Scale
                     model.setParent(anchorNode); // Anchor node 위에 model set -> 부모 설정
+
                     model.select();
 
                     // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
@@ -194,7 +201,8 @@ public class GltfActivity extends AppCompatActivity {
                         Material material = renderable.getMaterial(i);
                         material.setFloat4("baseColorFactor", color);
                     }
-
+                    progress.setVisibility(View.GONE);
+                    System.out.println("--------------------------------------중단--------------------------------------------");
                 });
 
         arFragment
@@ -203,6 +211,8 @@ public class GltfActivity extends AppCompatActivity {
                 .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
                         frameTime -> {
                             Long time = System.nanoTime(); // nanotime 만큼씩
+//                            progress.setVisibility(View.GONE);
+//                            System.out.println("--------------------------------------중단--------------------------------------------");
                             for (AnimationInstance animator : animators) {
                                 animator.animator.applyAnimation(
                                         animator.index,
