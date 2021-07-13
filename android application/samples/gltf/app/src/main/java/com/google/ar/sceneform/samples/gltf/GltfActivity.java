@@ -63,14 +63,14 @@ import java.util.Set;
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
  */
 public class GltfActivity extends AppCompatActivity {
-    private static final String TAG = GltfActivity.class.getSimpleName();
+    private static final String TAG = GltfActivity.class.getSimpleName(); // log 띄우기 위해
     private static final double MIN_OPENGL_VERSION = 3.0;
 
-    private ArFragment arFragment;
-    private Renderable renderable;
+    private ArFragment arFragment; // ARCORE 기본 구성 사용
+    private Renderable renderable; // 3D object rendering 위함
 
 
-    private static class AnimationInstance {
+    private static class AnimationInstance { // animation을 만들기 위해 사용되는 데이터들
         Animator animator;
         Long startTime;
         float duration;
@@ -87,7 +87,7 @@ public class GltfActivity extends AppCompatActivity {
         }
     }
 
-    private final Set<AnimationInstance> animators = new ArraySet<>();
+    private final Set<AnimationInstance> animators = new ArraySet<>(); // animationInstance 저장하기 위해 ArraySet 생성
 
     private final List<Color> colors =
             Arrays.asList(
@@ -99,7 +99,7 @@ public class GltfActivity extends AppCompatActivity {
                     new Color(0, 1, 1, 1),
                     new Color(1, 0, 1, 1),
                     new Color(1, 1, 1, 1));
-    private int nextColor = 0;
+    private int nextColor = 0; //
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -117,45 +117,44 @@ public class GltfActivity extends AppCompatActivity {
         // -----
         Intent intent = getIntent();
         String key = (String) intent.getSerializableExtra("key");
-        int length = (int) intent.getSerializableExtra("size"); // get items
+        int length = (int) intent.getSerializableExtra("size"); // get items -> key, size(length)
 
         Button button_distance = (Button)findViewById(R.id.button_distance);
-        button_distance.setOnClickListener(new View.OnClickListener(){
+        button_distance.setOnClickListener(new View.OnClickListener(){ // button Click -> setOnClickListener
             @Override
             public void onClick(View v){
                 Toast.makeText(getApplicationContext(),"거리 측정페이지입니다.",Toast.LENGTH_LONG).show();
                 Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class); // 거리측정페이지 : DistanceActivity
-                pageIntent.putExtra("length", length);
+                pageIntent.putExtra("length", length); // length 전달
                 startActivity(pageIntent);
             }
 
         });
         // -----
 
+//
+//        String newUri = "http://image.hanssem.com/hsimg/gds3d/dk/" + key + ".glb";
 
-        String newUri = "http://image.hanssem.com/hsimg/gds3d/dk/" + key + ".glb";
+        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // ux_fragment -> fragment manager 불러옴 -> ARFragment
 
-        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
+        WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
 
-        WeakReference<GltfActivity> weakActivity = new WeakReference<>(this);
-
-        ModelRenderable.builder()
+        ModelRenderable.builder() // Sceneform rendering engine
                 .setSource(
                         this,
                         Uri.parse(
 //                                newUri))
-                                "https://raw.githubusercontent.com/justbeaver97/2021-1-CapstoneDesign/master/threejs_tutorial/models/746525_close.glb"))
-                .setIsFilamentGltf(true)
+                                "https://raw.githubusercontent.com/justbeaver97/2021-1-CapstoneDesign/master/threejs_tutorial/models/746525_close.glb")) // our .glb model
+                .setIsFilamentGltf(true) // gltf load
                 .build()
                 .thenAccept(
                         modelRenderable -> {
                             GltfActivity activity = weakActivity.get();
                             if (activity != null) {
-                                activity.renderable = modelRenderable;
-
+                                activity.renderable = modelRenderable; // modelRenderable(our .glb file) -> renderable
                             }
                         })
-                .exceptionally(
+                .exceptionally( // exception
                         throwable -> {
                             Toast toast =
                                     Toast.makeText(this, "인테리어 파일을 불러올 수 없습니다.", Toast.LENGTH_LONG);
@@ -164,31 +163,32 @@ public class GltfActivity extends AppCompatActivity {
                             return null;
                         });
 
-        arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult -> Anchor
+        arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (renderable == null) {
                         return;
                     }
 
                     // Create the Anchor.
-                    Anchor anchor = hitResult.createAnchor();
-                    AnchorNode anchorNode = new AnchorNode(anchor);
-                    anchorNode.setParent(arFragment.getArSceneView().getScene());
+                    Anchor anchor = hitResult.createAnchor(); // create anchor
+                    AnchorNode anchorNode = new AnchorNode(anchor); // Object가 배치되는 영역인 Node를 Anchor 할당 생성 -> AnchorNode
+                    anchorNode.setParent(arFragment.getArSceneView().getScene()); // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
 
                     // Create the transformable model and add it to the anchor.
-                    TransformableNode model = new TransformableNode(arFragment.getTransformationSystem());
-                    model.setRenderable(renderable);
+                    TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
+                    model.setRenderable(renderable); // set rendering model
                     model.getScaleController().setMaxScale(0.015f);
-                    model.getScaleController().setMinScale(0.005f);
-                    model.setParent(anchorNode);
+                    model.getScaleController().setMinScale(0.005f); // set Scale
+                    model.setParent(anchorNode); // Anchor node 위에 model set -> 부모 설정
                     model.select();
 
-                    FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset();
+                    // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
+                    FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
                     if (filamentAsset.getAnimator().getAnimationCount() > 0) {
-                        animators.add(new AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime()));
+                        animators.add(new AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // Array set animators -> add Instance
                     }
 
-                    Color color = colors.get(nextColor);
+                    Color color = colors.get(nextColor); // basic color setting
                     nextColor++;
                     for (int i = 0; i < renderable.getSubmeshCount(); ++i) {
                         Material material = renderable.getMaterial(i);
@@ -200,21 +200,21 @@ public class GltfActivity extends AppCompatActivity {
         arFragment
                 .getArSceneView()
                 .getScene()
-                .addOnUpdateListener(
+                .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
                         frameTime -> {
-                            Long time = System.nanoTime();
+                            Long time = System.nanoTime(); // nanotime 만큼씩
                             for (AnimationInstance animator : animators) {
                                 animator.animator.applyAnimation(
                                         animator.index,
                                         (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
                                                 % animator.duration);
                                 animator.animator.updateBoneMatrices();
-                            }
+                            } // set animation
                         });
     }
 
 
-    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
+    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // version check function
         if (Build.VERSION.SDK_INT < VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later");
             Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();
