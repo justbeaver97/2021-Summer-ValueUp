@@ -10,6 +10,7 @@ import SwiftUI
 struct ControlView: View {
     @Binding var isControlsVisible: Bool
     @Binding var showBrowse: Bool
+    @Binding var showSettings: Bool
     
     var body: some View {
         VStack {
@@ -18,7 +19,7 @@ struct ControlView: View {
             Spacer()
             
             if isControlsVisible{
-                ControlButtonBar(showBrowse: $showBrowse)
+                ControlButtonBar(showBrowse: $showBrowse, showSettings: $showSettings)
             }
         }
     }
@@ -54,15 +55,15 @@ struct ControlVisibilityToggleButton: View {
 }
 
 struct ControlButtonBar: View {
+    @EnvironmentObject var placementSettings: PlacementSettings
     @Binding var showBrowse: Bool
+    @Binding var showSettings: Bool
     
     var body: some View {
         HStack {
             
             // MostRecentlyPlaced Button
-            ControlButton(systemIconName: "clock.fill") {
-                print("MostRecentlyPlaced button pressed.")
-            }
+            MostRecentlyPlacedButton().hidden(self.placementSettings.recentlyPlaced.isEmpty)
             Spacer()
 
             // Browse Button
@@ -78,6 +79,9 @@ struct ControlButtonBar: View {
             // Settings Button
             ControlButton(systemIconName: "slider.horizontal.3") {
                 print("Settings button pressed.")
+                self.showSettings.toggle()
+            }.sheet(isPresented: $showSettings) {
+                SettingsView(showSettings: $showSettings)
             }
             
         }
@@ -101,5 +105,31 @@ struct ControlButton: View {
                 .buttonStyle(PlainButtonStyle())
         }
         .frame(width: 50, height: 50)
+    }
+}
+
+struct MostRecentlyPlacedButton: View {
+    @EnvironmentObject var placementSettings: PlacementSettings
+    
+    var body: some View {
+        Button(action: {
+            print("MostRecentlyPlaced button pressed")
+            self.placementSettings.selectedModel = self.placementSettings.recentlyPlaced.last
+        }) {
+            if let mostRecentlyPlacedModel = self.placementSettings.recentlyPlaced.last {
+                Image(uiImage: mostRecentlyPlacedModel.thumbnail)
+                    .resizable()
+                    .frame(width: 46)
+                    .aspectRatio(1/1, contentMode: .fit)
+            } else {
+                Image(systemName: "clock.fill" )
+                    .font(.system(size: 35))
+                    .foregroundColor(.white)
+                    .buttonStyle(PlainButtonStyle())
+            }
+        }
+        .frame(width: 50, height: 50)
+        .background(Color.white)
+        .cornerRadius(8.0)
     }
 }
