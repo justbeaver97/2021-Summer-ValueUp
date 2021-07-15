@@ -1,3 +1,4 @@
+
 <!--
    Copyright 2018 Google LLC.
 
@@ -13,23 +14,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".GltfActivity">
-
-  <fragment android:name="com.google.ar.sceneform.ux.ArFragment"
-      android:id="@+id/ux_fragment"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
-
-  <ProgressBar
-      android:id="@+id/progress"
-      style="@android:style/Widget.ProgressBar.Large"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center" />
 
   <Button
       android:id="@+id/button_distance"
@@ -41,5 +32,43 @@
       android:background="@drawable/round_button"
       android:gravity="center"
       android:text="거리측정" />
+
+
+  <android.support.v4.widget.DrawerLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+      <fragment
+          android:id="@+id/ux_fragment"
+          android:name="com.google.ar.sceneform.ux.ArFragment"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/drawer_menu"
+        android:background="#8D000000"
+        app:itemTextColor="#FFFFFF"
+        android:layout_marginTop="15dp"
+        />
+
+  </android.support.v4.widget.DrawerLayout>
+
+  <ProgressBar
+      android:id="@+id/progress"
+      style="@android:style/Widget.ProgressBar.Large"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center" />
 
 </FrameLayout>
