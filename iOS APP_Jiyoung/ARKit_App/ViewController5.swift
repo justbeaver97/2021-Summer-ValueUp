@@ -26,6 +26,7 @@ class ViewController5: UIViewController {
     //MARK: Setup Methods
     func setupARView() {
         arView.automaticallyConfigureSession = false
+        self.addCoaching() // add CoachingOverlay View
         let configuration = ARWorldTrackingConfiguration()
         // ARWorldTrackingConfiguration -> arConfiguration을 상속받는 서브 클래스 중 하나
         // arkit 기본 제공, 실제 세계의 사용자의 위치를 인식하고 가상 콘텐츠를 배치할 좌표 공간과 일치시키는 역할 .
@@ -81,4 +82,29 @@ extension ViewController5: ARSessionDelegate {
             }
         }
     }
+}
+
+extension ViewController5: ARCoachingOverlayViewDelegate { // coachingOverlayView
+    func addCoaching() {
+        let coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.delegate = self
+        coachingOverlay.session = arView.session
+        coachingOverlay.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        coachingOverlay.translatesAutoresizingMaskIntoConstraints = false
+        arView.addSubview(coachingOverlay)
+        
+        NSLayoutConstraint.activate([
+            coachingOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            coachingOverlay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            coachingOverlay.widthAnchor.constraint(equalTo: view.widthAnchor),
+            coachingOverlay.heightAnchor.constraint(equalTo: view.heightAnchor)
+            ])
+        
+        coachingOverlay.activatesAutomatically = true
+        coachingOverlay.goal = .horizontalPlane
+    }
+    
+//    public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+//        <#code#>// Ready to add entities next?
+//    }
 }

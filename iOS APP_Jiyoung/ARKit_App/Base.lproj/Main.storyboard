@@ -32,51 +32,58 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Backgroud" translatesAutoresizingMaskIntoConstraints="NO" id="ekT-5A-MeK">
                                 <rect key="frame" x="-75" y="-83" width="551" height="1138"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dJe-sf-v2r">
-                                <rect key="frame" x="100" y="499" width="214" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="3D Viewer"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dJe-sf-v2r" customClass="UIRoundPrimaryButton" customModule="ARKit_App" customModuleProvider="target">
+                                <rect key="frame" x="100" y="489" width="214" height="41"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="3D Viewer">
+                                    <color key="titleColor" systemColor="labelColor"/>
+                                </state>
                                 <connections>
                                     <action selector="onClick_3D:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SHD-Z3-5ml"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4a2-M3-GA9">
-                                <rect key="frame" x="100" y="438" width="214" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="AR Viewer"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4a2-M3-GA9" customClass="UIRoundPrimaryButton" customModule="ARKit_App" customModuleProvider="target">
+                                <rect key="frame" x="100" y="438" width="214" height="41"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="AR Viewer">
+                                    <color key="titleColor" systemColor="labelColor"/>
+                                </state>
                                 <connections>
                                     <segue destination="ddh-qP-615" kind="show" id="Jgd-SM-5MK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Hanssem Furniture Viewer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPR-s5-2A1">
-                                <rect key="frame" x="27" y="-1293" width="361" height="39"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Symbol" translatesAutoresizingMaskIntoConstraints="NO" id="8Xc-Np-YLN">
-                                <rect key="frame" x="87" y="630" width="240" height="66"/>
+                                <rect key="frame" x="87" y="610" width="240" height="66"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="66" id="4di-xr-hIL"/>
                                     <constraint firstAttribute="width" constant="240" id="FyI-sW-ZWd"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hanssem Furniture Viewer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPR-s5-2A1">
+                                <rect key="frame" x="10" y="550" width="394" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qPR-s5-2A1" secondAttribute="trailing" constant="26" id="0Tb-la-YyG"/>
                             <constraint firstItem="4a2-M3-GA9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="8ca-E9-ECl"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dJe-sf-v2r" secondAttribute="trailing" constant="100" id="F5K-M0-3f5"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qPR-s5-2A1" secondAttribute="trailing" constant="10" id="Gw4-6o-Rph"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="8Xc-Np-YLN" secondAttribute="trailing" constant="87" id="Mvw-5H-5zd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4a2-M3-GA9" secondAttribute="trailing" constant="100" id="UUH-SS-tIL"/>
                             <constraint firstItem="8Xc-Np-YLN" firstAttribute="top" secondItem="dJe-sf-v2r" secondAttribute="bottom" constant="80" id="WHY-QL-jYf"/>
                             <constraint firstItem="dJe-sf-v2r" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="ZBS-nb-zQh"/>
                             <constraint firstItem="dJe-sf-v2r" firstAttribute="top" secondItem="4a2-M3-GA9" secondAttribute="bottom" constant="10" id="fGO-bO-8T9"/>
                             <constraint firstItem="4a2-M3-GA9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="350" id="kmX-Bg-g5Y"/>
-                            <constraint firstItem="qPR-s5-2A1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="27" id="qeT-xP-c4d"/>
+                            <constraint firstItem="8Xc-Np-YLN" firstAttribute="top" secondItem="qPR-s5-2A1" secondAttribute="bottom" constant="30" id="wwX-at-uKd"/>
                             <constraint firstItem="8Xc-Np-YLN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87" id="wwu-U9-XmP"/>
+                            <constraint firstItem="qPR-s5-2A1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="zgF-9p-YCE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Xu3-D7-F8R"/>
@@ -96,10 +103,12 @@
                             <arView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wph-ml-4l5">
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                             </arView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZl-sp-dHH">
-                                <rect key="frame" x="96" y="638" width="223" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="거리 측정"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZl-sp-dHH" customClass="UIRoundPrimaryButton" customModule="ARKit_App" customModuleProvider="target">
+                                <rect key="frame" x="96" y="638" width="223" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="거리 측정">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <segue destination="dyV-g9-UQz" kind="show" id="fi6-sW-hmG"/>
                                 </connections>
@@ -137,10 +146,12 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQ8-c5-Onl">
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                             </arscnView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j57-F2-JTe">
-                                <rect key="frame" x="99" y="638" width="217" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="배치 해보기"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j57-F2-JTe" customClass="UIRoundPrimaryButton" customModule="ARKit_App" customModuleProvider="target">
+                                <rect key="frame" x="99" y="638" width="217" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="배치 해보기">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <segue destination="sqJ-b1-Oq7" kind="show" id="CeN-Io-2os"/>
                                 </connections>
@@ -219,6 +230,12 @@
     <resources>
         <image name="Backgroud" width="1200" height="1800"/>
         <image name="Symbol" width="4961" height="1961"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="separatorColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

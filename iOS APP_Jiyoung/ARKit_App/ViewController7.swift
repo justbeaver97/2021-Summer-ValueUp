@@ -36,6 +36,9 @@ class ViewController7: UIViewController {
     //MARK: Setup Methods
     func setupARView() {
         arView.automaticallyConfigureSession = false // 자동으로 세션을 구성하지 않음
+        self.addCoaching()
+        
+        
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical] // 수평, 수직으로 planeDetection
         configuration.environmentTexturing = .automatic
@@ -108,4 +111,29 @@ extension ViewController7: ARSessionDelegate {
             }
         }
     }
+}
+
+extension ViewController7: ARCoachingOverlayViewDelegate { // coachingOverlayView
+    func addCoaching() {
+        let coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.delegate = self
+        coachingOverlay.session = arView.session
+        coachingOverlay.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        coachingOverlay.translatesAutoresizingMaskIntoConstraints = false
+        arView.addSubview(coachingOverlay)
+        
+        NSLayoutConstraint.activate([
+            coachingOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            coachingOverlay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            coachingOverlay.widthAnchor.constraint(equalTo: view.widthAnchor),
+            coachingOverlay.heightAnchor.constraint(equalTo: view.heightAnchor)
+            ])
+        
+        coachingOverlay.activatesAutomatically = true
+        coachingOverlay.goal = .horizontalPlane
+    }
+    
+//    public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+//        <#code#>// Ready to add entities next?
+//    }
 }

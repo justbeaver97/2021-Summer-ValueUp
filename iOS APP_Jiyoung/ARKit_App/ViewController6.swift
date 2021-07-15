@@ -123,7 +123,7 @@ final class ViewController6: UIViewController {
         present(alert, animated: true)
     }
     func showAlertUnAble() {
-        let alert = UIAlertController(title: "", message: "배치가 불가능합니다. 다른 장소를 선택하세요. (가구 길이: 30cm)", preferredStyle: .alert)
+        let alert = UIAlertController(title: "", message: "배치가 불가능합니다. 다른 장소를 선택하세요. (가구 길이: 50cm)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .cancel, handler: { action in
             print("tapped dismiss")
         }))
