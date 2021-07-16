@@ -2,7 +2,7 @@
 //  거리재기 모드
 //
 import UIKit
-//import SceneKit
+//import SceneKit -> ARKit 내에 모든 Scenekit의 클래스 포함됨
 import ARKit
 
 final class ViewController6: UIViewController {
@@ -10,6 +10,7 @@ final class ViewController6: UIViewController {
     // MARK: - Outlets
 
     @IBOutlet weak var sceneView: ARSCNView!
+    // 2D 요소를 3D 공간에 랜더링 하기 위한 뷰 -> scenekit의 3d 가상 contents를 ar 에 띄우기 위함
     
     // MARK: - Properties
     
@@ -65,8 +66,8 @@ final class ViewController6: UIViewController {
         let dotNode = SCNNode(geometry: dotGeometry)
         dotNode.position = SCNVector3(hitResult.worldTransform.columns.3.x,
                                       hitResult.worldTransform.columns.3.y,
-                                      hitResult.worldTransform.columns.3.z)
-        dotNodes.append(dotNode)
+                                      hitResult.worldTransform.columns.3.z) // scnvector3 -> x, y, z로 이루어져 있는 위치 값
+        dotNodes.append(dotNode) // dotNodes 배열에 append
         sceneView.scene.rootNode.addChildNode(dotNode) // Dot을 배치하기 위헤 anchor과 anchorNode를 scene에 배치
         
         if dotNodes.count >= 2 {
@@ -96,7 +97,7 @@ final class ViewController6: UIViewController {
         updateText(text: textFormatted, atPosition: endPosition)
     }
     
-    private func updateText(text: String, atPosition position: SCNVector3) {
+    private func updateText(text: String, atPosition position: SCNVector3) { // 거리를 나타내주는 text를 배치할 Node
         let textGeometry = SCNText(string: text, extrusionDepth: 1.0)
         textGeometry.firstMaterial?.diffuse.contents = UIColor.red
         textNode = SCNNode(geometry: textGeometry)
@@ -133,7 +134,7 @@ final class ViewController6: UIViewController {
 
 // MARK: - ARSCNViewDelegateMethods
 
-extension ViewController6: ARSCNViewDelegate {
+extension ViewController6: ARSCNViewDelegate { //
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         refreshDotNodes()

@@ -21,6 +21,7 @@
 		DCC814ED26611C5800E33CBE /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = DCC814EC26611C5800E33CBE /* art.scnassets */; };
 		DCC814EF2661317900E33CBE /* blue.usdz in Resources */ = {isa = PBXBuildFile; fileRef = DCC814EE2661317900E33CBE /* blue.usdz */; };
 		E77F0B06269FBF970055A150 /* chair_swan.usdz in Resources */ = {isa = PBXBuildFile; fileRef = E77F0B05269FBF970055A150 /* chair_swan.usdz */; };
+		E77F0B08269FF2C80055A150 /* UIRoundPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77F0B07269FF2C80055A150 /* UIRoundPrimaryButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		DCC814EC26611C5800E33CBE /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		DCC814EE2661317900E33CBE /* blue.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = blue.usdz; sourceTree = "<group>"; };
 		E77F0B05269FBF970055A150 /* chair_swan.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = chair_swan.usdz; sourceTree = "<group>"; };
+		E77F0B07269FF2C80055A150 /* UIRoundPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRoundPrimaryButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				DC0578132664A76100B274A4 /* ViewController6.swift */,
 				DC0578152664A98B00B274A4 /* ViewController7.swift */,
 				DCC814D62660EFCC00E33CBE /* Main.storyboard */,
+				E77F0B07269FF2C80055A150 /* UIRoundPrimaryButton.swift */,
 				DCC814EA2661125B00E33CBE /* toy_robot_vintage.usdz */,
 				E77F0B05269FBF970055A150 /* chair_swan.usdz */,
 				DCC814E8266107E500E33CBE /* 746525_close.usdz */,
@@ -117,6 +120,9 @@
 		DCC814C52660EFCC00E33CBE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					arviewer,
+				);
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
@@ -169,6 +175,7 @@
 				DCC814D52660EFCC00E33CBE /* ViewController1.swift in Sources */,
 				DCC814D12660EFCC00E33CBE /* AppDelegate.swift in Sources */,
 				DC0578142664A76100B274A4 /* ViewController6.swift in Sources */,
+				E77F0B08269FF2C80055A150 /* UIRoundPrimaryButton.swift in Sources */,
 				DC0578162664A98B00B274A4 /* ViewController7.swift in Sources */,
 				DCC814D32660EFCC00E33CBE /* SceneDelegate.swift in Sources */,
 				DC05781226649F6F00B274A4 /* ViewController5.swift in Sources */,

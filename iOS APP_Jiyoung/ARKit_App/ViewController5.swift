@@ -9,7 +9,7 @@ import ARKit
 
 class ViewController5: UIViewController {
 
-    @IBOutlet weak var arView: ARView!
+    @IBOutlet weak var arView: ARView! // realitykit
     // IBOutlet : 값에 접근하기위한 변수
     // weak -> 뷰를 삭제할 경우 메모리에서 해제
     
@@ -61,6 +61,7 @@ class ViewController5: UIViewController {
     
     func placeObject(named entityName: String, for anchor: ARAnchor) {
         let entity = try! ModelEntity.loadModel(named: entityName)
+        // ModelEntity -> realitykit이 랜더링하고 선택적으로 시뮬레이션하는 물리적 개체
         // string: entityName 의 모델을 로드 시도 -> 성공 시 entity 에 할당
         
         entity.generateCollisionShapes(recursive: true)
@@ -68,14 +69,14 @@ class ViewController5: UIViewController {
         arView.installGestures([.rotation,.translation], for: entity)
         // entity에 rotation과 translation이 동시에 인식될 수 있게 구성
         
-        let anchorEntity = AnchorEntity(anchor: anchor) // arcore -> anchorNode와 같음
+        let anchorEntity = AnchorEntity(anchor: anchor) // AnchorEntity -> ar session에서 가상 contents를 실제 개체에 연결하는 anchor
         anchorEntity.addChild(entity) //AnchorEntity 위에 entity 배치
         arView.scene.addAnchor(anchorEntity) // arview에 anchorentity를 배치
     }
 }
 
 extension ViewController5: ARSessionDelegate {
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) { // ARSession - ar 경험을 만들기 위해 필수적인 데이터와 로직을 처리하기 위한 세션
         for anchor in anchors {
             if let anchorName = anchor.name, anchorName == "chair_swan" { // anchor name 지정해서 불러오기
                 placeObject(named: anchorName, for: anchor)
