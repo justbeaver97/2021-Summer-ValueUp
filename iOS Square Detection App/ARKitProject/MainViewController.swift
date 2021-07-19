@@ -92,8 +92,8 @@ class MainViewController: UIViewController {
 
 		textManager.cancelScheduledMessage(forType: .contentPlacement)
 
-		let rowHeight = 45
-		let popoverSize = CGSize(width: 250, height: rowHeight * VirtualObjectSelectionViewController.COUNT_OBJECTS)
+		let rowHeight = 43
+		let popoverSize = CGSize(width: 300, height: rowHeight * VirtualObjectSelectionViewController.COUNT_OBJECTS)
 
 		let objectViewController = VirtualObjectSelectionViewController(size: popoverSize)
 		objectViewController.delegate = self
