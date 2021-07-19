@@ -1,4 +1,7 @@
 //
+//  initialized model 
+//
+//
 //  Model.swift
 //  iOS Application
 //

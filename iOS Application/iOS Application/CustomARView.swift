@@ -1,4 +1,7 @@
 //
+// subclass of ARView
+//
+//
 //  CustomARView.swift
 //  iOS Application
 //

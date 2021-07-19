@@ -1,4 +1,6 @@
 //
+//  Initialized Settings -> flase
+//
 //  SessionSettings.swift
 //  iOS Application
 //

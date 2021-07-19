@@ -1,4 +1,6 @@
 //
+//  Settings
+//
 //  SettingsView.swift
 //  iOS Application
 //
