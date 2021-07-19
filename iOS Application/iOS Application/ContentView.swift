@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var showSettings: Bool = false // initialize button -> arview만 보임
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .bottom) { // zstack -> 뷰들을 중첩시켜 줌
             ARViewContainer()
             
             if self.placementSettings.selectedModel == nil {
