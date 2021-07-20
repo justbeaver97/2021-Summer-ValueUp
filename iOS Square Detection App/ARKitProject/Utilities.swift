@@ -6,12 +6,13 @@ import ARKit
 extension UIImage {
 	func inverted() -> UIImage? {
         guard let ciImage = CIImage(image: self) else {
+            // CIImage -> core image 필터에 의해 처리되거나 생성될 이미지
             return nil
         }
-        return UIImage(ciImage: ciImage.applyingFilter("CIColorInvert", parameters: [String: Any]()))
+        return UIImage(ciImage: ciImage.applyingFilter("CIColorInvert", parameters: [String: Any]())) // 원본 이미지에 필터 적용해서 새 이미지 반환
     }
 
-	static func composeButtonImage(from thumbImage: UIImage, alpha: CGFloat = 1.0) -> UIImage {
+	static func composeButtonImage(from thumbImage: UIImage, alpha: CGFloat = 1.0) -> UIImage { // button image 구성
 		let maskImage = #imageLiteral(resourceName: "buttonring")
 		var thumbnailImage = thumbImage
 		if let invertedImage = thumbImage.inverted() {
@@ -28,7 +29,8 @@ extension UIImage {
 		thumbnailImage.draw(in: thumbDrawRect, blendMode: .normal, alpha: alpha)
 		let composedImage = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()
-		return composedImage!
+        // uigraphic... 함수에 의한 그리기 환경 정리 및 graphices context 제거
+		return composedImage! // 수정된 이미지
 	}
 }
 
@@ -72,7 +74,7 @@ extension Array where Iterator.Element == SCNVector3 {
 	}
 }
 
-extension RangeReplaceableCollection {
+extension RangeReplaceableCollection { // 요소의 범위를 다른 컬렉션의 요소로 교체
 	mutating func keepLast(_ elementsToKeep: Int) {
 		if count > elementsToKeep {
 			self.removeFirst(count - elementsToKeep)
@@ -83,7 +85,8 @@ extension RangeReplaceableCollection {
 // MARK: - SCNNode extension
 
 extension SCNNode {
-
+    
+    // object, 조명, 카메라 등을 부착할 수 있는 3D 좌표 공간의 위치 및 변환을 나타내는 장면 Node
 	func setUniformScale(_ scale: Float) {
 		self.scale = SCNVector3Make(scale, scale, scale)
 	}
@@ -92,11 +95,11 @@ extension SCNNode {
 		self.renderingOrder = 2
 		if let geom = self.geometry {
 			for material in geom.materials {
-				material.readsFromDepthBuffer = false
+				material.readsFromDepthBuffer = false // material을 rendering할 때, scenekit이 깊이 정보를 사용하는가 - false
 			}
 		}
 		for child in self.childNodes {
-			child.renderOnTop()
+			child.renderOnTop() // child가 맨 위에 부착
 		}
 	}
 }
@@ -109,13 +112,13 @@ extension SCNVector3 {
 		self.x = vec.x
 		self.y = vec.y
 		self.z = vec.z
-	}
+	} // intialized
 
 	func length() -> Float {
 		return sqrtf(x * x + y * y + z * z)
-	}
+	} // length function
 
-	mutating func setLength(_ length: Float) {
+	mutating func setLength(_ length: Float) { // mutating func -> 가변
 		self.normalize()
 		self *= length
 	}
@@ -155,7 +158,7 @@ extension SCNVector3 {
 
 	func cross(_ vec: SCNVector3) -> SCNVector3 {
 		return SCNVector3(self.y * vec.z - self.z * vec.y, self.z * vec.x - self.x * vec.z, self.x * vec.y - self.y * vec.x)
-	}
+	} // 형태에 맞게 vector 변환
 }
 
 public let SCNVector3One: SCNVector3 = SCNVector3(1.0, 1.0, 1.0)

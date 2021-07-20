@@ -1,5 +1,9 @@
 import UIKit
 
+// Setting 화면 ViewController
+
+
+
 enum Setting: String {
     // Bool settings with SettingsViewController switches
     case debugMode
@@ -9,7 +13,7 @@ enum Setting: String {
     case showHitTestAPI
     case use3DOFTracking
     case use3DOFFallback
-	case useOcclusionPlanes
+	case useOcclusionPlanes //  여러 케이스
 
     static func registerDefaults() {
         UserDefaults.standard.register(defaults: [

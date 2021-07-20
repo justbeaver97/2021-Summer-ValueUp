@@ -1,6 +1,11 @@
 import Foundation
 import ARKit
 
+
+// debug message viewer
+
+
+
 enum MessageType {
 	case trackingStateEscalation
 	case planeEstimation
@@ -18,6 +23,7 @@ class TextManager {
 		messageHideTimer?.invalidate()
 
 		viewController.messageLabel.text = text
+        // messageLabel -> show message
 
 		showHideMessage(hide: false, animated: true)
 
@@ -40,7 +46,8 @@ class TextManager {
 		debugMessageHideTimer?.invalidate()
 
 		viewController.debugMessageLabel.text = message
-
+        // debugmessageLabel -> show debug message
+        
 		showHideDebugMessage(hide: false, animated: true)
 
 		let charCount = message.characters.count
@@ -92,7 +99,7 @@ class TextManager {
 	}
 
 	func escalateFeedback(for trackingState: ARCamera.TrackingState, inSeconds seconds: TimeInterval) {
-		if self.trackingStateFeedbackEscalationTimer != nil {
+		if self.trackingStateFeedbackEscalationTimer != nil { // timer 초기화
 			self.trackingStateFeedbackEscalationTimer!.invalidate()
 			self.trackingStateFeedbackEscalationTimer = nil
 		}
