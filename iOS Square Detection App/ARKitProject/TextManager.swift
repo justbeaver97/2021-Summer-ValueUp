@@ -20,7 +20,7 @@ class TextManager {
 	}
 
 	func showMessage(_ text: String, autoHide: Bool = true) {
-		messageHideTimer?.invalidate()
+		messageHideTimer?.invalidate() // 비활성화 및 루프에서 제거
 
 		viewController.messageLabel.text = text
         // messageLabel -> show message
@@ -28,12 +28,13 @@ class TextManager {
 		showHideMessage(hide: false, animated: true)
 
 		if autoHide {
-			let charCount = text.characters.count
+			let charCount = text.count
 			let displayDuration: TimeInterval = min(10, Double(charCount) / 15.0 + 1.0)
 			messageHideTimer = Timer.scheduledTimer(withTimeInterval: displayDuration,
 			                                        repeats: false,
 			                                        block: { [weak self] ( _ ) in
 														self?.showHideMessage(hide: true, animated: true)
+            // 타이머 생성(interval, repeats, block)
 			})
 		}
 	}
@@ -41,16 +42,16 @@ class TextManager {
 	func showDebugMessage(_ message: String) {
 		guard viewController.showDebugVisuals else {
 			return
-		}
+		} // showDebugVisuals -> 디버그 메세지 활성화 선택 (true)일 때.
 
-		debugMessageHideTimer?.invalidate()
+		debugMessageHideTimer?.invalidate() // 비활성화 및 루프에서 제거
 
 		viewController.debugMessageLabel.text = message
         // debugmessageLabel -> show debug message
         
 		showHideDebugMessage(hide: false, animated: true)
 
-		let charCount = message.characters.count
+		let charCount = message.count
 		let displayDuration: TimeInterval = min(10, Double(charCount) / 15.0 + 1.0)
 		debugMessageHideTimer = Timer.scheduledTimer(withTimeInterval: displayDuration,
 		                                             repeats: false,
@@ -113,16 +114,16 @@ class TextManager {
 			var message = ""
 			switch trackingState {
 			case .notAvailable:
-				title = "Tracking status: Not available."
-				message = "Tracking status has been unavailable for an extended time. Try resetting the session."
+				title = "Tracking status: 사용할 수 없습니다. "
+				message = "장기간에 Tracking status를 사용할 수 없습니다. 세선을 재설정해 주세요."
 			case .limited(let reason):
-				title = "Tracking status: Limited."
-				message = "Tracking status has been limited for an extended time. "
+				title = "Tracking status: 제한되었습니다."
+				message = "장기간에 Tracking status 가 제한되었습니다. "
 				switch reason {
-				case .excessiveMotion: message += "Try slowing down your movement, or reset the session."
-				case .insufficientFeatures: message += "Try pointing at a flat surface, or reset the session."
-                case .initializing: message += "Initializing."
-                case .relocalizing: message += "Try pointing at a flat surface, or reset the session."
+				case .excessiveMotion: message += "움직임 속도를 낮추거나, 세션을 재설정해 주세요."
+				case .insufficientFeatures: message += "평평한 표면을 가리키거나, 세션을 재설정해 주세요."
+                case .initializing: message += "초기화."
+                case .relocalizing: message += "평평한 표면을 가리키거나, 세션을 재설정해 주세요."
                 }
 			case .normal: break
 			}
@@ -148,7 +149,7 @@ class TextManager {
 		}
 
 		if timer != nil {
-			timer!.invalidate()
+			timer!.invalidate() // timer reset
 			timer = nil
 		}
 	}
@@ -216,28 +217,28 @@ class TextManager {
 		if !animated {
 			viewController.messageLabel.isHidden = hide
 			return
-		}
+		} // animation이 없으면, messagelabel hide
 
-		UIView.animate(withDuration: 0.2,
+		UIView.animate(withDuration: 0.2, // (seconds)
 		               delay: 0,
 		               options: [.allowUserInteraction, .beginFromCurrentState],
 		               animations: {
 						self.viewController.messageLabel.isHidden = hide
 						self.updateMessagePanelVisibility()
 		}, completion: nil)
-	}
+	} // animate( duration : timeinterval, animation : escaping )
 
 	private func showHideDebugMessage(hide: Bool, animated: Bool) {
 		if !animated {
 			viewController.debugMessageLabel.isHidden = hide
 			return
-		}
+		} // animation이 없으면, debugmessageLabel hide -> hide의 값에 따라 변동 (bool)
 
 		UIView.animate(withDuration: 0.2,
 		               delay: 0,
 		               options: [.allowUserInteraction, .beginFromCurrentState],
 		               animations: {
-						self.viewController.debugMessageLabel.isHidden = hide
+						self.viewController.debugMessageLabel.isHidden = hide // animate 설정, hide 값 할당
 						self.updateMessagePanelVisibility()
 		}, completion: nil)
 	}
@@ -247,5 +248,5 @@ class TextManager {
 		viewController.messagePanel.isHidden = viewController.messageLabel.isHidden &&
 			viewController.debugMessageLabel.isHidden &&
 			viewController.featurePointCountLabel.isHidden
-	}
+	} // 표시할 항목이 있는가에 따라 판넬을 보여주거나 숨긴다. 
 }
