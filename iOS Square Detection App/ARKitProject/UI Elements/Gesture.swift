@@ -1,6 +1,11 @@
 import Foundation
 import ARKit
 
+
+// touch type define
+
+
+
 class Gesture {
 
 	enum TouchEventType {

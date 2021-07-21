@@ -1,6 +1,12 @@
 import Foundation
 import ARKit
 
+
+// hittest 시각화를 눌렀을 때 
+
+
+
+
 class HitTestVisualization {
 
 	var minHitDistance: CGFloat = 0.01

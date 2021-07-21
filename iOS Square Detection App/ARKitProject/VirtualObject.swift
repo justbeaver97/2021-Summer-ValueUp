@@ -1,5 +1,14 @@
+//
+//
+//
+//
+// Object define
+//
+//
+//
+
 import Foundation
-import SceneKit
+//import SceneKit -> arkit 포함됨
 import ARKit
 
 class VirtualObject: SCNNode {
@@ -29,9 +38,10 @@ class VirtualObject: SCNNode {
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+		fatalError("init(coder:)가 구현되지 않았습니다.")
 	}
 
+    // 3D model load function
 	func loadModel() {
 		guard let virtualObjectScene = SCNScene(named: "\(modelName).\(fileExtension)",
 												inDirectory: "Models.scnassets/\(modelName)") else {
@@ -50,6 +60,7 @@ class VirtualObject: SCNNode {
 		modelLoaded = true
 	}
 
+    // Model unload function
 	func unloadModel() {
 		for child in self.childNodes {
 			child.removeFromParentNode()

@@ -1,6 +1,12 @@
 import Foundation
 import ARKit
 
+
+
+// focussquare -> plane detection, object placement 가능 여부
+
+
+
 class FocusSquare: SCNNode {
 
 	// Original size of the focus square in m.
@@ -19,8 +25,8 @@ class FocusSquare: SCNNode {
 	private let animationDuration = 0.7
 
 	// Color of the focus square
-    private let focusSquareColor = #colorLiteral(red: 1, green: 0.9048884767, blue: 0, alpha: 1) // base yellow
-	private let focusSquareColorLight = #colorLiteral(red: 1, green: 0.9378413496, blue: 0.6714385933, alpha: 1) // light yellow
+    private let focusSquareColor = #colorLiteral(red: 1, green: 0.006844763772, blue: 0.1525276861, alpha: 1) // base yellow
+	private let focusSquareColorLight = #colorLiteral(red: 1, green: 0.6867772042, blue: 0.6643104007, alpha: 1) // light yellow
 
     // For scale adapdation based on the camera distance, see the `scaleBasedOnDistance(camera:)` method.
 	/////////////////////////////////////////////////
@@ -31,16 +37,17 @@ class FocusSquare: SCNNode {
 	override init() {
 		super.init()
 		self.opacity = 0.0
-		self.addChildNode(focusSquareNode())
+		self.addChildNode(focusSquareNode()) // focusSquareNode 위에 배치
 		open()
 		lastPositionOnPlane = nil
 		lastPosition = nil
 		recentFocusSquarePositions = []
-		anchorsOfVisitedPlanes = []
+		anchorsOfVisitedPlanes = [] // initialize
 	}
 
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+	required init?(coder aDecoder: NSCoder) { // initialized 함수
+        // NSCoder : 다른 개체의 보관 및 배포를 가능하게 하는 추상 클래스
+		fatalError("init(coder:)가 구현되지 않았습니다.")
 	}
 
 	func update(for position: SCNVector3, planeAnchor: ARPlaneAnchor?, camera: ARCamera?) {
@@ -48,11 +55,11 @@ class FocusSquare: SCNNode {
 		if let anchor = planeAnchor {
 			close(flash: !anchorsOfVisitedPlanes.contains(anchor))
 			lastPositionOnPlane = position
-			anchorsOfVisitedPlanes.insert(anchor)
+			anchorsOfVisitedPlanes.insert(anchor) // planeAnchor가 nil이 아니어서 할당이 되면 실행
 		} else {
-			open()
+			open() // 할당되지 못하면 실행
 		}
-		updateTransform(for: position, camera: camera)
+		updateTransform(for: position, camera: camera) // update
 	}
 
 	func hide() {
@@ -76,13 +83,13 @@ class FocusSquare: SCNNode {
 	private var anchorsOfVisitedPlanes: Set<ARAnchor> = []
 
 	private func updateTransform(for position: SCNVector3, camera: ARCamera?) {
-		recentFocusSquarePositions.append(position)
+		recentFocusSquarePositions.append(position) // scnvector3
 
 		// remove anything older than the last 8
-		recentFocusSquarePositions.keepLast(8)
+		recentFocusSquarePositions.keepLast(8) // 최근 8번 제외하고 너무 오래된 position 정보는 지우도록 한다.
 
 		// move to average of recent positions to avoid jitter
-		if let average = recentFocusSquarePositions.average {
+		if let average = recentFocusSquarePositions.average { // 최근 8번의 position을 이용한 평균을 사용하도록 한다.
 			self.position = average
 			self.setUniformScale(scaleBasedOnDistance(camera: camera))
 		}

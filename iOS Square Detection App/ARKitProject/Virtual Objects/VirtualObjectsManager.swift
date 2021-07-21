@@ -1,11 +1,3 @@
-//
-//  virtualObjectsManager.swift
-//  ARKitProject
-//
-//  Created by Ignacio Chiazzo on 2017-12-10.
-//  Copyright © 2017 Apple. All rights reserved.
-//
-
 import Foundation
 import os.log
 

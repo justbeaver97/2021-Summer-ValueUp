@@ -1,12 +1,17 @@
 import Foundation
 import ARKit
 
+
+// Plane
+
+
+
 class Plane: SCNNode {
 
 	var anchor: ARPlaneAnchor
 	var occlusionNode: SCNNode?
-	let occlusionPlaneVerticalOffset: Float = -0.01  // The occlusion plane should be placed 1 cm below the actual
-													// plane to avoid z-fighting etc.
+	let occlusionPlaneVerticalOffset: Float = -0.01
+    // z-fighting을 피하기 위해 occlusion plane은 실제 plane의 1cm 밑에 배치
 
 	var debugVisualization: PlaneDebugVisualization?
 
@@ -25,7 +30,7 @@ class Plane: SCNNode {
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+		fatalError("init(coder:)가 구현되지 않았습니다.")
 	}
 
 	func update(_ anchor: ARPlaneAnchor) {
