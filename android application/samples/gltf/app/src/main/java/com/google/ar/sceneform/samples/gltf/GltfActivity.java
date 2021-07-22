@@ -27,6 +27,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.ArraySet;
 import android.util.Log;
@@ -137,11 +139,12 @@ public class GltfActivity extends AppCompatActivity {
 
         });
 
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         Button button_list = (Button)findViewById(R.id.button_list);
         button_list.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                drawerLayout.openDrawer(GravityCompat.START);
             }
 
         });
