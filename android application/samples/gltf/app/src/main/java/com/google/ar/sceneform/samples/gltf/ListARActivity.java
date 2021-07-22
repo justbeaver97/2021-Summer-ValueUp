@@ -39,7 +39,7 @@ public class ListARActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // Click Item
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long l) {
-
+                System.out.println("--------------------------------------페이지 실행--------------------------------------------");
                 Intent intent = new Intent(ListARActivity.this, GltfActivity.class); // ListARActivity -> GltfActivity data 이동
                 intent.putExtra("key", listadapter.getItem(position).getKey());
                 intent.putExtra("size", listadapter.getItem(position).getSize()); // 상품의 key, size 전달

@@ -33,6 +33,17 @@
       android:gravity="center"
       android:text="거리측정" />
 
+  <Button
+      android:id="@+id/button_list"
+      android:layout_width="99dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|center"
+      android:layout_marginBottom="20sp"
+      android:fontFamily="@font/app_main_font"
+      android:background="@drawable/round_button"
+      android:gravity="center"
+      android:text="리스트" />
+
 
   <android.support.v4.widget.DrawerLayout
       android:layout_width="match_parent"

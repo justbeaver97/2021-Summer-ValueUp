@@ -60,6 +60,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.Date;
 
 public class GltfActivity extends AppCompatActivity {
     private static final String TAG = GltfActivity.class.getSimpleName(); // log 띄우기 위해
@@ -113,6 +114,8 @@ public class GltfActivity extends AppCompatActivity {
             return;
         } // 지원하는 OpenGL 버전(3.0)이 적합한지, android sdk 버전이 맞는지 확인
 
+        System.out.println("--------------------------------------페이지 실행--------------------------------------------");
+
         setContentView(R.layout.activity_ux);
         ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
@@ -125,11 +128,20 @@ public class GltfActivity extends AppCompatActivity {
         Button button_distance = (Button)findViewById(R.id.button_distance);
         button_distance.setOnClickListener(new View.OnClickListener(){ // button Click -> setOnClickListener
             @Override
-            public void onClick(View v){
-                Toast.makeText(getApplicationContext(),"거리 측정페이지입니다.",Toast.LENGTH_LONG).show();
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "거리 측정페이지입니다.", Toast.LENGTH_LONG).show();
                 Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class); // 거리측정페이지 : DistanceActivity
                 pageIntent.putExtra("length", length); // length 전달
                 startActivity(pageIntent);
+            }
+
+        });
+
+        Button button_list = (Button)findViewById(R.id.button_list);
+        button_list.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
             }
 
         });
@@ -143,6 +155,10 @@ public class GltfActivity extends AppCompatActivity {
         WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
         // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
         // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
+
+        long start = System.currentTimeMillis();
+
+        System.out.println("--------------------------------------모델 로드 실행--------------------------------------------"); // 페이지 실행시 자동으로 한개의 모델 Load
 
         ModelRenderable.builder() // Sceneform rendering engine -> gltf 파일 로드 및 개체 생성
                 .setSource(
@@ -167,10 +183,13 @@ public class GltfActivity extends AppCompatActivity {
                             return null;
                         });
 
+        long end = System.currentTimeMillis();
+        System.out.println("--------------------------------------모델 로드 종료 "+ (end-start)/1000 +"--------------------------------------------");
+
         arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     progress.setVisibility(View.VISIBLE);
-                    System.out.println("--------------------------------------실행--------------------------------------------");
+                    System.out.println("--------------------------------------탭 실행--------------------------------------------");
                     if (renderable == null) {
                         return;
                     }
@@ -202,7 +221,7 @@ public class GltfActivity extends AppCompatActivity {
                         material.setFloat4("baseColorFactor", color);
                     }
                     progress.setVisibility(View.GONE);
-                    System.out.println("--------------------------------------중단--------------------------------------------");
+                    System.out.println("--------------------------------------탭 종료--------------------------------------------");
                 });
 
         arFragment
