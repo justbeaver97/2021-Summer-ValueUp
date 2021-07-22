@@ -1,4 +1,7 @@
 //
+//  button on ARview settings
+//
+//
 //  ControlView.swift
 //  iOS Application
 //
@@ -37,7 +40,7 @@ struct ControlVisibilityToggleButton: View {
                 Color.black.opacity(0.25)
                 
                 Button(action: {
-                    print("ControlVisibilityToggle button pressed")
+                    print("ControlVisibilityToggle button pressed") // browse, setting button visibility button pressed
                     self.isControlsVisible.toggle()
                 }) {
                     Image(systemName: self.isControlsVisible ? "rectangle" : "slider.horizontal.below.rectangle")
@@ -68,7 +71,7 @@ struct ControlButtonBar: View {
 
             // Browse Button
             ControlButton(systemIconName: "square.grid.2x2") {
-                print("Browse button pressed.")
+                print("Browse button pressed.") // model seleted (Browse) button pressed
                 self.showBrowse.toggle()
             }.sheet(isPresented: $showBrowse, content: {
                 // BrowseView
@@ -78,7 +81,7 @@ struct ControlButtonBar: View {
 
             // Settings Button
             ControlButton(systemIconName: "slider.horizontal.3") {
-                print("Settings button pressed.")
+                print("Settings button pressed.") // settings button pressed
                 self.showSettings.toggle()
             }.sheet(isPresented: $showSettings) {
                 SettingsView(showSettings: $showSettings)

@@ -1,4 +1,7 @@
 //
+// Browse Navigation View
+//
+//
 //  BrowseView.swift
 //  iOS Application
 //

@@ -1,4 +1,7 @@
 //
+//  select model setting +
+//
+//
 //  PlacementSettings.swift
 //  iOS Application
 //
@@ -14,17 +17,17 @@ class PlacementSettings: ObservableObject {
     // When the user selects a model in BrowseView, this property is set
     @Published var selectedModel: Model? {
         willSet(newValue) {
-            print("Setting selectedModel to \(String(describing: newValue?.name))")
+            print("Setting selectedModel to \(String(describing: newValue?.name))") // select model setting -> 배치 전에 선택된 모델 세팅
         }
     }
     // When the user taps confirm in PlacementView, the value of selectedModel is assigned to confirmModel
     @Published var confirmedModel: Model? {
         willSet(newValue) {
             guard let model = newValue else {
-                print("Clearing confirmedModel")
+                print("Clearing confirmedModel") // 배치 후 clearing model
                 return
             }
-            print("Setting confirmedModel to \(model.name)")
+            print("Setting confirmedModel to \(model.name)") // 배치 준비
             
             self.recentlyPlaced.append(model)
         }

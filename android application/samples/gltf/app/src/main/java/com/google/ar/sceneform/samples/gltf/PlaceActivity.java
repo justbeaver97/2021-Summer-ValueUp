@@ -71,8 +71,8 @@ public class PlaceActivity extends AppCompatActivity {
     private Renderable renderable; // sceneform rendering basic class -> rendering 가능한 3D model 생성
 
 
-    private static class AnimationInstance { // animation을 만들기 위해 사용되는 데이터들
-        Animator animator;
+    private static class AnimationInstance { // animation을 만들기 위해 사용되는 데이터들 -> Filament 기능
+        Animator animator; // updating matrices in filament / updating bone matrices in filament -> gltf animation
         Long startTime;
         float duration;
         int index;
@@ -80,7 +80,7 @@ public class PlaceActivity extends AppCompatActivity {
         AnimationInstance(Animator animator, int index, Long startTime) {
             this.animator = animator;
             this.startTime = startTime;
-            this.duration = animator.getAnimationDuration(index);
+            this.duration = animator.getAnimationDuration(index); // Returns the duration of the specified glTF animation in seconds / index : animation index
             this.index = index;
         }
 
@@ -203,7 +203,7 @@ public class PlaceActivity extends AppCompatActivity {
 
                         // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
                         FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
-                        if (filamentAsset.getAnimator().getAnimationCount() > 0) {
+                        if (filamentAsset.getAnimator().getAnimationCount() > 0) { // if animation exists
                             animators.add(new PlaceActivity.AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // Array set animators -> add Instance
                         }
 
@@ -223,11 +223,11 @@ public class PlaceActivity extends AppCompatActivity {
                             frameTime -> {
                                 Long time = System.nanoTime();
                                 for (PlaceActivity.AnimationInstance animator : animators) { //for문 -> animators
-                                    animator.animator.applyAnimation(
+                                    animator.animator.applyAnimation( // 주어진 animator에 rotation, translation and scale to entities
                                             animator.index,
                                             (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
                                                     % animator.duration);
-                                    animator.animator.updateBoneMatrices();
+                                    animator.animator.updateBoneMatrices(); //Computes root-to-node transforms for all bone nodes, then passes
                                 }
                             });
 

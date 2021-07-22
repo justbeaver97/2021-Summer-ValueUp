@@ -1,4 +1,7 @@
 //
+// select model -> Placement model setting
+//
+//
 //  PlacementView.swift
 //  iOS Application
 //
@@ -15,16 +18,16 @@ struct PlacementView: View {
             
             Spacer()
             PlacementButton(systemIconName: "xmark.circle.fill") {
-                print("Cancel Placement button pressed")
-                self.placementSettings.selectedModel = nil
+                print("Cancel Placement button pressed") // cancel
+                self.placementSettings.selectedModel = nil // model select initialized
             }
             
             Spacer()
             PlacementButton(systemIconName: "checkmark.circle.fill") {
-                print("Confirm Placement button pressed")
+                print("Confirm Placement button pressed") // confirm
                 
-                self.placementSettings.confirmedModel = self.placementSettings.selectedModel
-                self.placementSettings.selectedModel = nil
+                self.placementSettings.confirmedModel = self.placementSettings.selectedModel // object placement
+                self.placementSettings.selectedModel = nil // model select initialized
             }
             
             Spacer()
@@ -46,6 +49,6 @@ struct PlacementButton: View {
                 .foregroundColor(.white)
                 .buttonStyle(PlainButtonStyle())
         }
-        .frame(width: 75, height: 75)
+        .frame(width: 75, height: 75) // checkmark, xmark setting
     }
 }

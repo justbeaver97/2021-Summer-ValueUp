@@ -1,4 +1,7 @@
 //
+//  initialized model 
+//
+//
 //  Model.swift
 //  iOS Application
 //
@@ -13,6 +16,7 @@ enum ModelCategory: CaseIterable {
     case table
     case deco
     case tv
+    case fur
     case other
     
     var label: String {
@@ -24,6 +28,8 @@ enum ModelCategory: CaseIterable {
                 return "Decorations"
             case .tv:
                 return "TV"
+            case .fur:
+                return "furniture"
             case .other:
                 return "Others"
             }
@@ -94,6 +100,10 @@ struct Models {
         let flower_tulip = Model(name:"flower_tulip", category: .other, scaleCompensation: 0.32)
         
         self.all += [pot_plant, flower_tulip]
+        
+        let sofa = Model(name:"746525_close", category: .fur, scaleCompensation: 0.32)
+        
+        self.all += [sofa]
     }
     
     func get(category: ModelCategory) -> [Model] {

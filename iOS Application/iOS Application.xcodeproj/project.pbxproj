@@ -30,6 +30,8 @@
 		DC806C9E2695A70700AF46BE /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC806C9D2695A70700AF46BE /* View+Extensions.swift */; };
 		DC806CA02695AA0A00AF46BE /* SessionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC806C9F2695AA0A00AF46BE /* SessionSettings.swift */; };
 		DC806CA22695AAB500AF46BE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC806CA12695AAB500AF46BE /* SettingsView.swift */; };
+		E78A1CFC26A53475006881F4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78A1CFB26A53475006881F4 /* MainView.swift */; };
+		E7BC6E1226A1735000F242A5 /* 746525_close.usdz in Resources */ = {isa = PBXBuildFile; fileRef = E7BC6E1126A1719B00F242A5 /* 746525_close.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,8 @@
 		DC806C9D2695A70700AF46BE /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		DC806C9F2695AA0A00AF46BE /* SessionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSettings.swift; sourceTree = "<group>"; };
 		DC806CA12695AAB500AF46BE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E78A1CFB26A53475006881F4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		E7BC6E1126A1719B00F242A5 /* 746525_close.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = 746525_close.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +133,7 @@
 		DC386CCC269402EC003AED73 /* iOS Application */ = {
 			isa = PBXGroup;
 			children = (
+				E78A1CFB26A53475006881F4 /* MainView.swift */,
 				DC386CCD269402EC003AED73 /* iOS_ApplicationApp.swift */,
 				DC7922FB2694472F00293602 /* BrowseView.swift */,
 				DC386CCF269402EC003AED73 /* ContentView.swift */,
@@ -179,6 +184,7 @@
 			children = (
 				DC7922FF26945C1D00293602 /* cup_saucer_set.usdz */,
 				DC79230126945C2100293602 /* fender_stratocaster.usdz */,
+				E7BC6E1126A1719B00F242A5 /* 746525_close.usdz */,
 				DC79230026945C1F00293602 /* flower_tulip.usdz */,
 				DC79230226945C2300293602 /* gramophone.usdz */,
 				DC7922F326943CB300293602 /* chair_swan.usdz */,
@@ -298,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC7922F626943CB600293602 /* chair_swan.usdz in Resources */,
+				E7BC6E1226A1735000F242A5 /* 746525_close.usdz in Resources */,
 				DC79230626945C2300293602 /* gramophone.usdz in Resources */,
 				DC386CD5269402EF003AED73 /* Preview Assets.xcassets in Resources */,
 				DC79230426945C2300293602 /* flower_tulip.usdz in Resources */,
@@ -331,6 +338,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC7923082694659C00293602 /* PlacementSettings.swift in Sources */,
+				E78A1CFC26A53475006881F4 /* MainView.swift in Sources */,
 				DC806CA02695AA0A00AF46BE /* SessionSettings.swift in Sources */,
 				DC806C9E2695A70700AF46BE /* View+Extensions.swift in Sources */,
 				DC7922FE269458C900293602 /* Model.swift in Sources */,
@@ -499,7 +507,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iOS Application/Preview Content\"";
-				DEVELOPMENT_TEAM = 6457669GBX;
+				DEVELOPMENT_TEAM = X2AT796D57;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "iOS Application/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -507,7 +515,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Placement.sample.iOS-Application";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Placement.sample.iOS-Application2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -521,7 +529,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iOS Application/Preview Content\"";
-				DEVELOPMENT_TEAM = 6457669GBX;
+				DEVELOPMENT_TEAM = X2AT796D57;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "iOS Application/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -529,7 +537,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Placement.sample.iOS-Application";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Placement.sample.iOS-Application2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
