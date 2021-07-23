@@ -26,6 +26,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import static java.sql.DriverManager.println;
+
 /**
  * Base class for rendering in 3D space by attaching to a {@link com.google.ar.sceneform.Node} with
  * {@link com.google.ar.sceneform.Node#setRenderable(Renderable)}.
@@ -314,6 +316,7 @@ public abstract class Renderable {
     protected Builder() {}
 
     public B setSource(Context context, Callable<InputStream> inputStreamCreator) {
+      println("------------------setSource1---------------------");
       Preconditions.checkNotNull(inputStreamCreator);
       this.sourceUri = null;
       this.inputStreamCreator = inputStreamCreator;
@@ -322,6 +325,7 @@ public abstract class Renderable {
     }
 
     public B setSource(Context context, Uri sourceUri) {
+
       return setRemoteSourceHelper(context, sourceUri, true);
     }
 
@@ -331,6 +335,7 @@ public abstract class Renderable {
 
 
     public B setSource(Context context, int resource) {
+      println("------------------setSource2---------------------");
       this.inputStreamCreator = LoadHelper.fromResource(context, resource);
       this.context = context;
 
@@ -342,6 +347,7 @@ public abstract class Renderable {
 
     /** Build a {@link Renderable} from a {@link RenderableDefinition}. */
     public B setSource(RenderableDefinition definition) {
+      println("------------------setSource3---------------------");
       this.definition = definition;
       registryId = null;
       sourceUri = null;
