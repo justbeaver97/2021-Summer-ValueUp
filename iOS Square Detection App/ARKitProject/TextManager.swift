@@ -1,9 +1,8 @@
+// MARK: - Debug message viewer
+
+
 import Foundation
 import ARKit
-
-
-// debug message viewer
-
 
 
 enum MessageType {

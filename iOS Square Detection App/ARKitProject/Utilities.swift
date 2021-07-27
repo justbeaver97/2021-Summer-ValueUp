@@ -1,7 +1,9 @@
+// MARK: - UIImage extensions
+
+
 import Foundation
 import ARKit
 
-// - MARK: UIImage extensions
 
 extension UIImage {
 	func inverted() -> UIImage? {
@@ -232,7 +234,8 @@ extension CGPoint {
 	}
 
 	init(_ vector: SCNVector3) {
-		self.x = CGFloat(vector.x)
+        self.init()
+        self.x = CGFloat(vector.x)
 		self.y = CGFloat(vector.y)
 	}
 

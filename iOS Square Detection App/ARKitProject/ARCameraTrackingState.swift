@@ -1,9 +1,8 @@
+// MARK: - ARCamera를 사용했을 시, 품질이 좋지 않은 경우 -> return
+
+
 import Foundation
 import ARKit
-
-
-// ARcamera를 통한 위치 추적 품질 및 품질이 좋지 않을 시 그 원인(case)
-
 
 
 extension ARCamera.TrackingState {

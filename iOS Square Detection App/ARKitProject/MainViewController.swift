@@ -1,13 +1,10 @@
+// MARK: - Main View Controller
+
 import ARKit
 //import Foundation -> UIKit에 포함됨
 //import SceneKit -> ARkit에 포함됨
 import UIKit // app의 model 객체를 정의하는데 필요한 기본 타입들을 제공한다.
 import Photos
-
-
-// Main화면 ViewController
-
-
 
 class MainViewController: UIViewController { // 가장 상위에 위치할 Controller
 	var dragOnInfinitePlanesEnabled = false // 평면이 있다는 가정 하에 계속 드래그할 수 있는 선택창
@@ -56,7 +53,7 @@ class MainViewController: UIViewController { // 가장 상위에 위치할 Contr
 		didSet { // 값이 변경된 직후에 호출된다. (willSet은 값이 변경되기 직전에 호출)
 			if use3DOFTracking {
 				sessionConfig = ARWorldTrackingConfiguration() // 장치의 움직임을 추적하고 앵커 고정하는 역할의 class
-			}
+			} // 3DOF(3 degrees of freedom) : 회전 운동만 추적할 수 있는 디바이스
 			sessionConfig.isLightEstimationEnabled = UserDefaults.standard.bool(for: .ambientLightEstimation)
             // user의 현재 ambientLightEstimation 상태 여부를 sessionConfig의 조명 추정 여부에 입힌다.
 			session.run(sessionConfig) // session run
@@ -70,12 +67,16 @@ class MainViewController: UIViewController { // 가장 상위에 위치할 Contr
 	func toggleAmbientLightEstimation(_ enabled: Bool) { // 조명 추적 여부 -> bool
         if enabled {
 			if !sessionConfig.isLightEstimationEnabled {
+                print("조명 추적")
 				sessionConfig.isLightEstimationEnabled = true
+                sceneView.autoenablesDefaultLighting = true
 				session.run(sessionConfig)
 			}
         } else {
 			if sessionConfig.isLightEstimationEnabled {
+                print("조명 비추적")
 				sessionConfig.isLightEstimationEnabled = false
+                sceneView.autoenablesDefaultLighting = false
 				session.run(sessionConfig)
 			}
         }
@@ -288,7 +289,7 @@ class MainViewController: UIViewController { // 가장 상위에 위치할 Contr
 		imagePlane.firstMaterial?.lightingModel = .constant
 
 		let planeNode = SCNNode(geometry: imagePlane)
-		sceneView.scene.rootNode.addChildNode(planeNode)
+		sceneView.scene.rootNode.addChildNode(planeNode) // 현재 화면에 사진을 띄울 수 있다.
 
 		focusSquare?.isHidden = false // 다시 나타내기
 	}
@@ -376,8 +377,9 @@ extension MainViewController {
 			textManager.escalateFeedback(for: camera.trackingState, inSeconds: 5.0)
 		case .limited:
 			if use3DOFTrackingFallback {
-				// After 10 seconds of limited quality, fall back to 3DOF mode.
+				// 10초의 limited quality 이후, 다시 3DOF 모드로 fall back.
 				trackingFallbackTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false, block: { _ in
+                    print("Fallback")
 					self.use3DOFTracking = true
 					self.trackingFallbackTimer?.invalidate()
 					self.trackingFallbackTimer = nil
@@ -493,9 +495,8 @@ extension MainViewController: VirtualObjectSelectionViewControllerDelegate {
 
 	func loadVirtualObject(object: VirtualObject) {
 		// Show progress indicator
-        // 근데 이거 왜 안뜨는거야?
 		let spinner = UIActivityIndicatorView()
-        print("모델을 로드합니다.")
+        print("Main - loadVirtualObject function")
 		spinner.center = addObjectButton.center
 		spinner.bounds.size = CGSize(width: addObjectButton.bounds.width - 5, height: addObjectButton.bounds.height - 5)
 		addObjectButton.setImage(#imageLiteral(resourceName: "buttonring"), for: [])
@@ -505,11 +506,14 @@ extension MainViewController: VirtualObjectSelectionViewControllerDelegate {
 		DispatchQueue.global().async {
 			self.isLoadingObject = true
 			object.viewController = self
+            print("Main - manager addvirtualObject")
 			VirtualObjectsManager.shared.addVirtualObject(virtualObject: object)
+            print("Main - manager setvirtualObject")
 			VirtualObjectsManager.shared.setVirtualObjectSelected(virtualObject: object)
 
+            print("Main - loadModel function")
 			object.loadModel()
-            print("모델 로드 성공")
+            print(object.usdzFileLoad())
 
 			DispatchQueue.main.async {
 				if let lastFocusSquarePos = self.focusSquare?.lastPosition {
@@ -542,9 +546,10 @@ extension MainViewController: ARSCNViewDelegate {
 
 			// If light estimation is enabled, update the intensity of the model's lights and the environment map
 			if let lightEstimate = self.session.currentFrame?.lightEstimate {
-				self.sceneView.enableEnvironmentMapWithIntensity(lightEstimate.ambientIntensity / 40) // 조명 업데이트를 사용한 환경 맵 업데이트
+				self.sceneView.enableEnvironmentMapWithIntensity(lightEstimate.ambientIntensity / 100)
+//                print(lightEstimate.ambientIntensity / 100)// 조명 업데이트를 사용한 환경 맵 업데이트
 			} else {
-				self.sceneView.enableEnvironmentMapWithIntensity(25)
+				self.sceneView.enableEnvironmentMapWithIntensity(10)
 			}
 		}
 	}
@@ -779,12 +784,12 @@ extension MainViewController {
 			let planeAnchorNode = sceneView.node(for: anchor) else { // 모델이 선택되어 있고, scene에 node가 존재해야 실행된다.
 			return
 		}
-        print("평면 위 object 움직임")
+//        print("평면 위 object 움직임")
 		// Get the object's position in the plane's coordinate system.
 		let objectPos = planeAnchorNode.convertPosition(object.position, from: object.parent)
 
 		if objectPos.y == 0 {
-            print("물체가 이미 평면 위에 있어요.")
+//            print("물체가 이미 평면 위에 있어요.")
 			return; // The object is already on the plane
 		}
 

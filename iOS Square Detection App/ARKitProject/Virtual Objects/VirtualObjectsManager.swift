@@ -1,3 +1,6 @@
+// MARK: - Object management
+
+
 import Foundation
 import os.log
 
@@ -16,6 +19,7 @@ class VirtualObjectsManager {
 	private var virtualObjectSelected: VirtualObject?
 
 	func addVirtualObject(virtualObject: VirtualObject) {
+        print("manager - addvirtualObject")
 		virtualObjects.append(virtualObject)
 	}
 
@@ -52,10 +56,13 @@ class VirtualObjectsManager {
 	}
 
 	func isAVirtualObjectPlaced() -> Bool {
+        print("isAVirtualObjectPlaced")
 		return virtualObjectSelected != nil
 	}
 
 	func setVirtualObjectSelected(virtualObject: VirtualObject) {
+        print("Manager - setVirtualObjectSelected")
+        print(virtualObject)
 		self.virtualObjectSelected = virtualObject
 	}
 

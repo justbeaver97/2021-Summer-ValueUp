@@ -1,15 +1,11 @@
-//
-//
-//
-//
-// Object define
-//
-//
-//
+// MARK: - Object define Node
+
 
 import Foundation
-//import SceneKit -> arkit 포함됨
+import SceneKit.ModelIO
 import ARKit
+import RealityKit
+
 
 class VirtualObject: SCNNode {
 	static let ROOT_NAME = "Virtual object root node"
@@ -41,28 +37,91 @@ class VirtualObject: SCNNode {
 		fatalError("init(coder:)가 구현되지 않았습니다.")
 	}
 
-    // 3D model load function
+    // MARK: - 3D model load function
 	func loadModel() {
+        print("VirtualObject - loadModel function")
 		guard let virtualObjectScene = SCNScene(named: "\(modelName).\(fileExtension)",
 												inDirectory: "Models.scnassets/\(modelName)") else {
             print("모델을 찾지 못해 return.")
 			return
 		}
+        let wrapperNode = SCNNode()
+//
+//        let url = URL(fileURLWithPath: "https://developer.apple.com/augmented-reality/quick-look/models/teapot/teapot.usdz")
+//        if let virtualObjectScene = try? SCNScene(url: url, options: [.checkConsistency: true]){
+//            print("불러왔따")
+//            for child in virtualObjectScene.rootNode.childNodes {
+//                wrapperNode.addChildNode(child)
+//                print("Add child")
+//            }
+//            print("loadModel func")
+//            self.addChildNode(wrapperNode)
+//        } else {
+//            print("Error loading")
+//            return
+//        }
+//        modelLoaded = true
         
-		let wrapperNode = SCNNode()
+        for child in virtualObjectScene.rootNode.childNodes {
+            print("in")
+            child.geometry?.firstMaterial?.lightingModel = .physicallyBased
+            child.movabilityHint = .movable
+            print(self.modelName)
+            if self.modelName == "teapot" { // usdz file scale format
+                let scale = 0.005
+                child.scale = SCNVector3(scale, scale, scale)
+//                child.f
+            }
+            else if self.modelName == "746525_close" {
+                let scale = 0.01
+                child.scale = SCNVector3(scale, scale, scale)
+            }
+            wrapperNode.addChildNode(child)
+        }
+        self.addChildNode(wrapperNode)
+        print(self) // Virtual object root node
+        modelLoaded = true
+        
+    }
+        
+    
+        
+    // MARK: - 3D usdz file load function
 
-		for child in virtualObjectScene.rootNode.childNodes {
-			child.geometry?.firstMaterial?.lightingModel = .physicallyBased
-			child.movabilityHint = .movable
-			wrapperNode.addChildNode(child)
-		}
-        print("loadModel func")
-		self.addChildNode(wrapperNode)
-
-		modelLoaded = true
+    func usdzFileLoad() {
+        print("virtualObejct - download function")
+        let url = URL(string: "https://developer.apple.com/augmented-reality/quick-look/models/teapot/teapot.usdz")
+        let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let destinationUrl = documentsUrl.appendingPathComponent(url!.lastPathComponent)
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
+        var request = URLRequest(url: url!)
+        request.httpMethod = "GET"
+        
+        let downloadTask = session.downloadTask(with: request, completionHandler: {
+            (location:URL?, response:URLResponse?, error:Error?) -> Void in
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: destinationUrl.path) {
+                try! fileManager.removeItem(atPath: destinationUrl.path)
+            }
+            try! fileManager.moveItem(atPath: location!.path, toPath: destinationUrl.path)
+            DispatchQueue.main.async {
+                do {
+                    let object = try Entity.load(contentsOf: destinationUrl) // It is work
+                    print(object)
+                    for child in object.children {
+                        print(child)
+                    }
+                }
+                catch {
+                    print("Fail load entity: \(error.localizedDescription)")
+                }
+            }
+        })
+        downloadTask.resume()
 	}
 
-    // Model unload function
+    
+    // MARK: - Model unload function
 	func unloadModel() {
 		for child in self.childNodes {
 			child.removeFromParentNode()
@@ -84,10 +143,12 @@ extension VirtualObject {
 
 	static func isNodePartOfVirtualObject(_ node: SCNNode) -> Bool {
 		if node.name == VirtualObject.ROOT_NAME {
+            print("VirtualObject - isnodepartOfVirtualObject")
 			return true
 		}
 
 		if node.parent != nil {
+            print("VirtualObeject - is Not nodepartofVirtualObject")
 			return isNodePartOfVirtualObject(node.parent!)
 		}
 

@@ -1,10 +1,8 @@
+// MARK: - View setting
+
+
 import ARKit
 import Foundation
-//import SceneKit
-
-
-// View setting controller
-
 
 
 extension ARSCNView {
@@ -15,7 +13,7 @@ extension ARSCNView {
 		automaticallyUpdatesLighting = false
 		preferredFramesPerSecond = 60 // view가 장면을 rendering하는데 사용하는 애니메이션 frame rate(second)
 		contentScaleFactor = 1.3 // content의 축적 비율
-        enableEnvironmentMapWithIntensity(25.0) // 명암(25.0)을 이용하여 구축하는 환경 맵 -> 함수 밑에 있음.
+        enableEnvironmentMapWithIntensity(0) // 명암(25.0)을 이용하여 구축하는 환경 맵 -> 함수 밑에 있음.
 		if let camera = pointOfView?.camera {
 			camera.wantsHDR = true
 			camera.wantsExposureAdaptation = true

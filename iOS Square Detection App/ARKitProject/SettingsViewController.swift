@@ -1,7 +1,7 @@
+// MARK: - Setting list View Controller
+
+
 import UIKit
-
-// Setting 화면 ViewController
-
 
 
 enum Setting: String {
