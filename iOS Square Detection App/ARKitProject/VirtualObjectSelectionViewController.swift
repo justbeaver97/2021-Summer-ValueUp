@@ -39,25 +39,17 @@ class VirtualObjectSelectionViewController: UIViewController, UITableViewDataSou
 	func getObject(index: Int) -> VirtualObject {
 		switch index {
 		case 0:
-			return Candle()
+			return Teapot()
 		case 1:
-			return Vase()
-		case 2:
-			return Lamp()
-		case 3:
-			return Chair()
-        case 4:
-            return Sofa()
-        case 5:
-            return Teapot()
-        case 6:
-            return LemonMeringuePie()
+			return AirForce()
+        case 2:
+            return fender_stratocaster()
 		default:
-			return Candle()
+			return Teapot()
 		}
 	}
 
-	static let COUNT_OBJECTS = 7
+	static let COUNT_OBJECTS = 3
 
 	// MARK: - UITableViewDelegate
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

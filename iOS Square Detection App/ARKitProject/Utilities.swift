@@ -111,7 +111,8 @@ extension SCNNode {
 extension SCNVector3 {
 
 	init(_ vec: vector_float3) {
-		self.x = vec.x
+        self.init()
+        self.x = vec.x
 		self.y = vec.y
 		self.z = vec.z
 	} // intialized
@@ -214,10 +215,10 @@ extension SCNMaterial {
 		material.diffuse.contents = diffuse
 		material.isDoubleSided = true
 		if respondsToLighting {
-			material.locksAmbientWithDiffuse = true
+			material.locksAmbientWithDiffuse = false
 		} else {
 			material.ambient.contents = UIColor.black
-			material.lightingModel = .constant
+			material.lightingModel = .physicallyBased
 			material.emission.contents = diffuse
 		}
 		return material
@@ -229,7 +230,8 @@ extension SCNMaterial {
 extension CGPoint {
 
 	init(_ size: CGSize) {
-		self.x = size.width
+        self.init()
+        self.x = size.width
 		self.y = size.height
 	}
 
@@ -293,7 +295,8 @@ func *= (left: inout CGPoint, right: CGFloat) {
 extension CGSize {
 
 	init(_ point: CGPoint) {
-		self.width = point.x
+        self.init()
+        self.width = point.x
 		self.height = point.y
 	}
 
@@ -600,7 +603,7 @@ func createCrossNode(size: CGFloat = 0.01, color: UIColor = UIColor.green,
 	let planeNode = SCNNode(geometry: createSquarePlane(size: planeDimension, contents: image))
 	if let material = planeNode.geometry?.firstMaterial {
 		material.ambient.contents = UIColor.black
-		material.lightingModel = .constant
+//		material.lightingModel = .constant
 	}
 
 	if horizontal {
