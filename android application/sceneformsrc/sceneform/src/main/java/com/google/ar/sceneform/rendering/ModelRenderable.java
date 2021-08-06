@@ -21,12 +21,6 @@ import com.google.ar.sceneform.utilities.AndroidPreconditions;
 public class ModelRenderable extends Renderable {
   
 
-
-
-  
-
-
-
   private ModelRenderable(Builder builder) {
     super(builder);
   }
@@ -38,49 +32,7 @@ public class ModelRenderable extends Renderable {
     copyAnimationFrom(other);
   }
 
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
   private void copyAnimationFrom(ModelRenderable other) {return ;}
 
 
@@ -107,73 +59,6 @@ public class ModelRenderable extends Renderable {
     AndroidPreconditions.checkMinAndroidApiLevel();
     return new Builder();
   }
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-  
-
-
 
 
   /** Factory class for {@link ModelRenderable}. */

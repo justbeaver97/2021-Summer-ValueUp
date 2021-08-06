@@ -24,31 +24,36 @@
 
   <Button
       android:id="@+id/button_distance"
-      android:layout_width="99dp"
-      android:layout_height="wrap_content"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
       android:layout_gravity="bottom|center"
-      android:layout_marginBottom="120sp"
-      android:fontFamily="@font/app_main_font"
-      android:background="@drawable/round_button"
-      android:gravity="center"
-      android:text="거리측정" />
+      android:layout_marginBottom="60sp"
+      android:background="@drawable/ruler" />
 
   <Button
       android:id="@+id/button_list"
-      android:layout_width="99dp"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|center"
-      android:layout_marginBottom="20sp"
-      android:fontFamily="@font/app_main_font"
-      android:background="@drawable/round_button"
-      android:gravity="center"
-      android:text="리스트" />
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="bottom|left"
+      android:layout_marginBottom="60sp"
+      android:layout_marginStart="60sp"
+      android:background="@drawable/list" />
 
+  <Button
+      android:id="@+id/button_refresh"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="top|right"
+      android:layout_marginTop="50sp"
+      android:layout_marginRight="50sp"
+      android:background="@drawable/refresh" />
 
   <android.support.v4.widget.DrawerLayout
       android:id="@+id/drawerLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent" >
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,16 +68,16 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_menu"
-        android:background="#8D000000"
-        app:itemTextColor="#FFFFFF"
-        android:layout_marginTop="15dp"
-        />
+      android:id="@+id/nav"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      app:headerLayout="@layout/drawer_header"
+      app:menu="@menu/drawer_menu"
+      android:background="#8D000000"
+      app:itemTextColor="#FFFFFF"
+      android:layout_marginTop="15dp"
+    />
 
   </android.support.v4.widget.DrawerLayout>
 

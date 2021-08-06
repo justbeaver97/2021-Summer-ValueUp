@@ -192,9 +192,6 @@ public class PlaceActivity extends AppCompatActivity {
                         TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
                         model.setRenderable(renderable); // set rendering model
 
-                        float wantScale = 0.00007f * distance; // distance만큼 Scale값 조정
-                        model.getScaleController().setMaxScale(wantScale);
-                        model.getScaleController().setMinScale(wantScale/100 *99);
                         model.getRotationController().setEnabled(false);
                         model.getTranslationController().setEnabled(false); // 회전, 조작 false
                         model.setParent(anchorNode);

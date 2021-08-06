@@ -2,11 +2,11 @@ package com.google.ar.sceneform.samples.gltf;
 
 public class SampleData{
     private int image;
-    private String key;
+    private int key;
     private String fullName;
     private int size;
 
-    public SampleData(int image, String key, String fullName, int size){ // 받은 매개변수 각각 변수에 지정
+    public SampleData(int image, int key, String fullName, int size){ // 받은 매개변수 각각 변수에 지정
         this.image = image;
         this.key = key;
         this.fullName = fullName;
@@ -17,7 +17,7 @@ public class SampleData{
         return this.image;
     }
 
-    public String getKey(){
+    public int getKey(){
         return this.key;
     }
 

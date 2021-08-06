@@ -27,6 +27,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +41,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.filament.gltfio.Animator;
 import com.google.android.filament.gltfio.FilamentAsset;
@@ -105,6 +110,8 @@ public class GltfActivity extends AppCompatActivity {
                     new Color(1, 1, 1, 1));
     private int nextColor = 0; //
 
+    private String fileUri;
+
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
     // CompletableFuture requires api level 24
@@ -116,15 +123,40 @@ public class GltfActivity extends AppCompatActivity {
             return;
         } // 지원하는 OpenGL 버전(3.0)이 적합한지, android sdk 버전이 맞는지 확인
 
-        System.out.println("--------------------------------------페이지 실행--------------------------------------------");
-
         setContentView(R.layout.activity_ux);
         ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
 
+        final String[] Glburi = new String[22];
+        Glburi[0] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/668317.glb";
+        Glburi[1] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/668318.glb";
+        Glburi[2] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/681946.glb";
+        Glburi[3] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/681947.glb";
+        Glburi[4] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/737686.glb";
+        Glburi[5] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/737687.glb";
+        Glburi[6] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746525.glb";
+        Glburi[7] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746526.glb";
+        Glburi[8] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746540.glb";
+        Glburi[9] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746541.glb";
+        Glburi[10] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/772973.glb";
+        Glburi[11] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/777039.glb";
+        Glburi[12] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/777040.glb";
+        Glburi[13] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/786840.glb";
+        Glburi[14] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/786841.glb";
+        Glburi[15] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/786842.glb";
+        Glburi[16] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/787819.glb";
+        Glburi[17] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/787823.glb";
+        Glburi[18] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/796379.glb";
+        Glburi[19] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/796379.glb";
+        Glburi[20] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/796379.glb";
+        Glburi[21] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/799220.glb";
+
+
         // -----
         Intent intent = getIntent();
-        String key = (String) intent.getSerializableExtra("key");
+        int key = (int) intent.getSerializableExtra("key");
+        fileUri = Glburi[key];
+
         int length = (int) intent.getSerializableExtra("size"); // get items -> key, size(length)
 
         Button button_distance = (Button)findViewById(R.id.button_distance);
@@ -143,11 +175,86 @@ public class GltfActivity extends AppCompatActivity {
         Button button_list = (Button)findViewById(R.id.button_list);
         button_list.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                drawerLayout.openDrawer(GravityCompat.START);
+            public void onClick(View v){ drawerLayout.openDrawer(GravityCompat.START); }
+        });
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override // List에서 상품 선택시
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                progress.setVisibility(View.VISIBLE);
+
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+
+                int id = menuItem.getItemId();
+                String title = menuItem.getTitle().toString();
+
+                if(id==R.id.menu_668317){
+                    fileUri = Glburi[0];
+                }else if(id == R.id.menu_668318){
+                    fileUri = Glburi[1];
+                }else if(id == R.id.menu_681946){
+                    fileUri = Glburi[2];
+                }else if(id == R.id.menu_681947){
+                    fileUri = Glburi[3];
+                }else if(id == R.id.menu_737686){
+                    fileUri = Glburi[4];
+                }else if(id == R.id.menu_737687){
+                    fileUri = Glburi[5];
+                }else if(id == R.id.menu_746525){
+                    fileUri = Glburi[6];
+                }else if(id == R.id.menu_746526){
+                    fileUri = Glburi[7];
+                }else if(id == R.id.menu_746540){
+                    fileUri = Glburi[8];
+                }else if(id == R.id.menu_746541){
+                    fileUri = Glburi[9];
+                }else if(id == R.id.menu_772973){
+                    fileUri = Glburi[10];
+                }else if(id == R.id.menu_777039){
+                    fileUri = Glburi[11];
+                }else if(id == R.id.menu_777040){
+                    fileUri = Glburi[12];
+                }else if(id == R.id.menu_786840){
+                    fileUri = Glburi[13];
+                }else if(id == R.id.menu_786841){
+                    fileUri = Glburi[14];
+                }else if(id == R.id.menu_786842){
+                    fileUri = Glburi[15];
+                }else if(id == R.id.menu_787819){
+                    fileUri = Glburi[16];
+                }else if(id == R.id.menu_787823){
+                    fileUri = Glburi[17];
+                }else if(id == R.id.menu_796379){
+                    fileUri = Glburi[18];
+                }else if(id == R.id.menu_796416){
+                    fileUri = Glburi[19];
+                }else if(id == R.id.menu_799215){
+                    fileUri = Glburi[20];
+                }else if(id == R.id.menu_799220){
+                    fileUri = Glburi[21];
+                }
+
+
+                Toast.makeText(getApplicationContext(), "현재 상품 : " + title, Toast.LENGTH_LONG).show();
+
+                progress.setVisibility(View.GONE);
+
+                return true;
             }
 
         });
+
+        Button button_refresh = (Button)findViewById(R.id.button_refresh);
+        button_refresh.setOnClickListener(new View.OnClickListener(){
+            @Override // anchor 초기화
+            public void onClick(View v){
+                animators.clear();
+            }
+
+        });
+
         // -----
 
 //
@@ -159,15 +266,10 @@ public class GltfActivity extends AppCompatActivity {
         // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
         // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
 
-        long start = System.currentTimeMillis();
-
-        System.out.println("--------------------------------------모델 로드 실행--------------------------------------------"); // 페이지 실행시 자동으로 한개의 모델 Load
-
         ModelRenderable.builder() // Sceneform rendering engine -> gltf 파일 로드 및 개체 생성
                 .setSource(
                         this,
-                        Uri.parse(
-                                "https://raw.githubusercontent.com/justbeaver97/2021-1-CapstoneDesign/master/threejs_tutorial/models/746525_close.glb")) // our .glb model
+                        Uri.parse(fileUri)) // our .glb model
                 .setIsFilamentGltf(true) // gltf load
                 .build()
                 .thenAccept(
@@ -186,13 +288,9 @@ public class GltfActivity extends AppCompatActivity {
                             return null;
                         });
 
-        long end = System.currentTimeMillis();
-        System.out.println("--------------------------------------모델 로드 종료 "+ (end-start)/1000 +"--------------------------------------------");
 
         arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    progress.setVisibility(View.VISIBLE);
-                    System.out.println("--------------------------------------탭 실행--------------------------------------------");
                     if (renderable == null) {
                         return;
                     }
@@ -223,8 +321,6 @@ public class GltfActivity extends AppCompatActivity {
                         Material material = renderable.getMaterial(i);
                         material.setFloat4("baseColorFactor", color);
                     }
-                    progress.setVisibility(View.GONE);
-                    System.out.println("--------------------------------------탭 종료--------------------------------------------");
                 });
 
         arFragment
@@ -233,8 +329,6 @@ public class GltfActivity extends AppCompatActivity {
                 .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
                         frameTime -> {
                             Long time = System.nanoTime(); // nanotime 만큼씩
-//                            progress.setVisibility(View.GONE);
-//                            System.out.println("--------------------------------------중단--------------------------------------------");
                             for (AnimationInstance animator : animators) {
                                 animator.animator.applyAnimation(
                                         animator.index,
@@ -244,7 +338,6 @@ public class GltfActivity extends AppCompatActivity {
                             } // set animation
                         });
     }
-
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // version check function
         if (Build.VERSION.SDK_INT < VERSION_CODES.N) {
