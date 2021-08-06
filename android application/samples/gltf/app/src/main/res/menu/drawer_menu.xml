@@ -42,7 +42,7 @@
         android:title="한샘 프라임 리츠 천연면피가죽 전동 리클라이너 소파 3인용" />
     <item
         android:id="@+id/menu_772973"
-        android:icon = "@drawable/couch"
+        android:icon = "@drawable/bed"
         android:title="한샘 클로즈 침대 SS 슈퍼싱글 코튼그레이" />
     <item
         android:id="@+id/menu_777039"

@@ -128,28 +128,28 @@ public class GltfActivity extends AppCompatActivity {
         progress.setVisibility(View.GONE);
 
         final String[] Glburi = new String[22];
-        Glburi[0] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/668317.glb";
-        Glburi[1] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/668318.glb";
-        Glburi[2] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/681946.glb";
-        Glburi[3] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/681947.glb";
-        Glburi[4] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/737686.glb";
-        Glburi[5] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/737687.glb";
-        Glburi[6] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746525.glb";
-        Glburi[7] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746526.glb";
-        Glburi[8] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746540.glb";
-        Glburi[9] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/746541.glb";
-        Glburi[10] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/772973.glb";
-        Glburi[11] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/777039.glb";
-        Glburi[12] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/777040.glb";
-        Glburi[13] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/786840.glb";
-        Glburi[14] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/786841.glb";
-        Glburi[15] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/786842.glb";
-        Glburi[16] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/787819.glb";
-        Glburi[17] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/787823.glb";
-        Glburi[18] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/796379.glb";
-        Glburi[19] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/796379.glb";
-        Glburi[20] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/796379.glb";
-        Glburi[21] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/android%20application/samples/gltf/app/src/main/res/drawable/test_asset/799220.glb";
+        Glburi[0] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/668317.glb";
+        Glburi[1] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/668318.glb";
+        Glburi[2] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/681946.glb";
+        Glburi[3] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/681947.glb";
+        Glburi[4] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/737686.glb";
+        Glburi[5] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/737687.glb";
+        Glburi[6] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/746525.glb";
+        Glburi[7] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/746526.glb";
+        Glburi[8] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/746540.glb";
+        Glburi[9] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/746541.glb";
+        Glburi[10] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/772973.glb";
+        Glburi[11] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/777039.glb";
+        Glburi[12] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/777040.glb";
+        Glburi[13] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/786840.glb";
+        Glburi[14] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/786841.glb";
+        Glburi[15] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/786842.glb";
+        Glburi[16] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/787819.glb";
+        Glburi[17] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/787823.glb";
+        Glburi[18] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/796379.glb";
+        Glburi[19] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/796379.glb";
+        Glburi[20] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/796379.glb";
+        Glburi[21] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/799220.glb";
 
 
         // -----
@@ -178,11 +178,15 @@ public class GltfActivity extends AppCompatActivity {
             public void onClick(View v){ drawerLayout.openDrawer(GravityCompat.START); }
         });
 
+
+        WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
+        // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
+        // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override // List에서 상품 선택시
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                progress.setVisibility(View.VISIBLE);
 
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
@@ -192,54 +196,73 @@ public class GltfActivity extends AppCompatActivity {
 
                 if(id==R.id.menu_668317){
                     fileUri = Glburi[0];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_668318){
                     fileUri = Glburi[1];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_681946){
                     fileUri = Glburi[2];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_681947){
                     fileUri = Glburi[3];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_737686){
                     fileUri = Glburi[4];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_737687){
                     fileUri = Glburi[5];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_746525){
                     fileUri = Glburi[6];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_746526){
                     fileUri = Glburi[7];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_746540){
                     fileUri = Glburi[8];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_746541){
                     fileUri = Glburi[9];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_772973){
                     fileUri = Glburi[10];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_777039){
                     fileUri = Glburi[11];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_777040){
                     fileUri = Glburi[12];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_786840){
                     fileUri = Glburi[13];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_786841){
                     fileUri = Glburi[14];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_786842){
                     fileUri = Glburi[15];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_787819){
                     fileUri = Glburi[16];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_787823){
                     fileUri = Glburi[17];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_796379){
                     fileUri = Glburi[18];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_796416){
                     fileUri = Glburi[19];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_799215){
                     fileUri = Glburi[20];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }else if(id == R.id.menu_799220){
                     fileUri = Glburi[21];
+                    buildModel(weakActivity,getBaseContext(), fileUri, progress);
                 }
 
-
                 Toast.makeText(getApplicationContext(), "현재 상품 : " + title, Toast.LENGTH_LONG).show();
-
-                progress.setVisibility(View.GONE);
 
                 return true;
             }
@@ -252,42 +275,15 @@ public class GltfActivity extends AppCompatActivity {
             public void onClick(View v){
                 animators.clear();
             }
-
         });
 
         // -----
 
-//
 //        String newUri = "http://image.hanssem.com/hsimg/gds3d/dk/" + key + ".glb";
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // ux_fragment -> fragment manager 불러옴 -> ARFragment
 
-        WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
-        // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
-        // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
-
-        ModelRenderable.builder() // Sceneform rendering engine -> gltf 파일 로드 및 개체 생성
-                .setSource(
-                        this,
-                        Uri.parse(fileUri)) // our .glb model
-                .setIsFilamentGltf(true) // gltf load
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            GltfActivity activity = weakActivity.get(); // 참조
-                            if (activity != null) {
-                                activity.renderable = modelRenderable; // modelRenderable(our .glb file) -> renderable
-                            }
-                        })
-                .exceptionally( // exception
-                        throwable -> {
-                            Toast toast =
-                                    Toast.makeText(this, "인테리어 파일을 불러올 수 없습니다.", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                            return null;
-                        });
-
+        buildModel(weakActivity, this, fileUri, progress);
 
         arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
@@ -337,6 +333,31 @@ public class GltfActivity extends AppCompatActivity {
                                 animator.animator.updateBoneMatrices();
                             } // set animation
                         });
+    }
+
+    public void buildModel(WeakReference<GltfActivity> weakActivity,Context context, String uri, ProgressBar progress){
+        progress.setVisibility(View.VISIBLE);
+        ModelRenderable.builder() // Sceneform rendering engine -> gltf 파일 로드 및 개체 생성
+                .setSource(context, Uri.parse(uri)) // our .glb model
+                .setIsFilamentGltf(true) // gltf load
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            GltfActivity activity = weakActivity.get(); // 참조
+                            if (activity != null) {
+                                activity.renderable = modelRenderable; // modelRenderable(our .glb file) -> renderable
+                            }
+                        })
+                .exceptionally( // exception
+                        throwable -> {
+                            Toast toast =
+                                    Toast.makeText(this, "인테리어 파일을 불러올 수 없습니다.", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+        progress.setVisibility(View.GONE);
+
     }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // version check function
