@@ -12,12 +12,21 @@ import UIKit
 
 // MARK: - Size Measurement
 
-class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class SizeMeasurementView : UIViewController, ARSessionDelegate, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var addBtn : UIButton!
+    var screenCenter: CGPoint?
+    var boxNode: SCNNode?
+    let session = ARSession() // ar scene의 고유 런타임 인스턴스 관리
+
+
     
     var doteNodes = [SCNNode]()
     var textNode = SCNNode()
     var lineNode = SCNNode()
+    var progressDot = SCNNode()
+    
+//    let midPosition : SCNVector3
     
     
     
@@ -27,38 +36,78 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
         sceneView.session.delegate = self
         sceneView.autoenablesDefaultLighting = true
         print("SizeMeasurementView")
-        setupARView()
+//        setupFocusSquare()
 //        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        
+        
+        let scene = SCNScene()
+
+        let boxNode = createBox()
+        scene.rootNode.addChildNode(boxNode)
+        self.boxNode = boxNode
+
+        //------------------------------------
+        // Set the view's delegate
+        sceneView.delegate = self
+        // Set the scene to the view
+        sceneView.scene = scene
+    }
+    
+    // MARK: - CreateBox
+    
+    
+    func createBox() -> SCNNode {
+        let boxGeometry = SCNBox(width: 0.2, height: 0, length: 0.2, chamferRadius: 0)
+        
+        let material = SCNMaterial()
+        material.isDoubleSided = false
+        material.locksAmbientWithDiffuse = true
+        material.diffuse.contents = UIImage(named: "Models.scnassets/focus.png")
+        material.specular.contents = UIColor(white: 0.8, alpha: 1.0) // 빛반사
+        
+        let boxNode = SCNNode(geometry: boxGeometry)
+        boxNode.geometry?.materials = [material]
+        
+        return boxNode
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.addCoaching()
 //        let configuration = ARWorldTrackingConfiguration()
 //        configuration.planeDetection = [.horizontal, .vertical]
 //        sceneView.session.run(configuration)
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal, .vertical]
+        
+        sceneView.session.run(configuration)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UIApplication.shared.isIdleTimerDisabled = true 
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         sceneView.session.pause()
-    }
-    
-    func setupARView() {
-        self.addCoaching()
+        session.pause() // session 멈춘다.
         let configuration = ARWorldTrackingConfiguration()
-        
-        configuration.planeDetection = [.horizontal, .vertical]
-        configuration.environmentTexturing = .automatic
-        sceneView.session.run(configuration)
+        configuration.isLightEstimationEnabled = true
     }
     
-    // MARK: - Touch Began
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if doteNodes.count >= 2 {
+    
+    
+    // MARK: - addButton Click
+    
+    @IBAction func addAnchor(_ button : UIButton) {
+        
+        if doteNodes.count == 3 {
             for dot in doteNodes{
                 dot.removeFromParentNode()
             }
@@ -68,30 +117,32 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
             lineNode = SCNNode()
             doteNodes = [SCNNode]()
         }
+        // 클릭하면 화면 중앙의 앵커가 저장 -> addDot로 연결
+        ExistPlanes()
+    }
+    
+    func ExistPlanes() {
+        let results = sceneView.raycastQuery(from: view.center, allowing: ARRaycastQuery.Target.estimatedPlane, alignment: .any)
         
-        if let touch = touches.first {
-            let touchLocation = touch.location(in: sceneView)
+        if let hitRes = results {
+            let rayCast = sceneView.session.raycast(hitRes)
             
-            let results = sceneView.raycastQuery(from: touchLocation, allowing: ARRaycastQuery.Target.estimatedPlane, alignment: .any)
-            
-            if let hitRes = results {
-                let rayCast = sceneView.session.raycast(hitRes)
-                
-                guard let ray = rayCast.first else { return }
-                addDot(at : ray)
-            }
+            guard let ray = rayCast.first else { return }
+            addDot(at: ray)
         }
     }
     
+
     
     
     // MARK: - Add dot
 
     func addDot(at hitResult: ARRaycastResult) {
-        let sphereScene = SCNSphere(radius: 0.01)
+        let sphereScene = SCNSphere(radius: 0.005)
         
         let material = SCNMaterial()
         
+        material.locksAmbientWithDiffuse = false
         material.diffuse.contents = UIColor.white
         sphereScene.materials = [material]
         
@@ -108,10 +159,21 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
         sceneView.scene.rootNode.addChildNode(node)
         
         doteNodes.append(node)
-        
-        if doteNodes.count >= 2{
-            sceneView.scene.rootNode.addChildNode(lineBetweenNodes(positionA: doteNodes[0].position, positionB: doteNodes[1].position, inScene: self.sceneView.scene))
+
+        print(doteNodes.count)
+        if doteNodes.count == 1 {
+            let buttonImage = UIImage(named: "go")
+            self.addBtn.setImage(buttonImage, for: [])
+            let node2 = SCNNode(geometry: sphereScene)
+            sceneView.scene.rootNode.addChildNode(node2)
+            doteNodes.append(node2)
+        }
+        else if doteNodes.count == 3{
             calculate()
+            doteNodes[1].removeFromParentNode()
+            sceneView.scene.rootNode.addChildNode(lineBetweenNodes(positionA: doteNodes[0].position, positionB: doteNodes[2].position, inScene: self.sceneView.scene))
+            let buttonImage = UIImage(named: "add")
+            self.addBtn.setImage(buttonImage, for: [])
         }
     }
     
@@ -124,7 +186,7 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
         let midPosition = SCNVector3 (x:(positionA.x + positionB.x) / 2, y:(positionA.y + positionB.y) / 2, z:(positionA.z + positionB.z) / 2)
 
         let lineGeometry = SCNCylinder()
-        lineGeometry.radius = 0.0025
+        lineGeometry.radius = 0.003
         lineGeometry.height = CGFloat(distance)
         lineGeometry.radialSegmentCount = 5
         lineGeometry.firstMaterial!.diffuse.contents = UIColor.white
@@ -141,7 +203,7 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
 
     func calculate() {
         let start = doteNodes[0]
-        let end = doteNodes[1]
+        let end = doteNodes[2]
         
         print(start.position)
         print(end.position)
@@ -152,7 +214,7 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
         
         let midPosition = SCNVector3 (x:(start.position.x + end.position.x) / 2, y:(start.position.y + end.position.y) / 2, z:(start.position.z + end.position.z) / 2)
 
-        updateText(text: "\(round(abs(distance)*100)) cm", atPosition: midPosition)
+        updateText(text: "\(round(abs(distance)*1000)/10) cm", atPosition: midPosition)
     }
     
     
@@ -161,17 +223,14 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
     // MARK: - update TextNode
 
     func updateText(text: String, atPosition position: SCNVector3){
-        textNode.removeFromParentNode()
-        
         let textGeometry = SCNText(string: text, extrusionDepth: 0)
-        textGeometry.firstMaterial?.diffuse.contents = UIColor.white
-//        textGeometry.containerFrame = CGRect(x: Double(position.x), y: Double(position.y), width: 5, height: 5)
+        textGeometry.firstMaterial?.diffuse.contents = UIColor.black
+        
         
         textNode = SCNNode(geometry: textGeometry)
         textNode.position = SCNVector3(position.x - 0.01, position.y + 0.002, position.z)
         
-        textNode.scale = SCNVector3(0.002, 0.002, 0.002)
-        
+        textNode.scale = SCNVector3(0.0017, 0.0017, 0.0017)
         
         
         let minVec = textNode.boundingBox.min
@@ -180,18 +239,17 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
                                    maxVec.y - minVec.y,
                                    maxVec.z - minVec.z);
 
-        let plane = SCNPlane(width: CGFloat(bound.x + 2.5),
-                             height: CGFloat(bound.y + 2.5))
-        plane.cornerRadius = 3
-        plane.firstMaterial?.diffuse.contents = UIColor.black
+        let plane = SCNPlane(width: CGFloat(bound.x + 4),
+                             height: CGFloat(bound.y + 4))
+        plane.cornerRadius = 3.5
+        plane.firstMaterial?.diffuse.contents = UIColor.white
 
         let planeNode = SCNNode(geometry: plane)
         planeNode.position = SCNVector3(CGFloat( minVec.x) + CGFloat(bound.x) / 2 ,
                                         CGFloat( minVec.y) + CGFloat(bound.y) / 2 ,
-                                        CGFloat(minVec.z - 0.01))
+                                        CGFloat( minVec.z - 0.01))
 
         textNode.addChildNode(planeNode)
-        planeNode.name = "text"
         
         sceneView.scene.rootNode.addChildNode(textNode)
         print("text")
@@ -214,6 +272,91 @@ class SizeMeasurementView : UIViewController, ARSCNViewDelegate, ARSessionDelega
         doteNodes = [SCNNode]()
     }
     
+    
+    
+    
+    // MARK: - Renderer
+    
+    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        guard let pointOfView = sceneView.pointOfView else {return}
+        let transform = pointOfView.transform // 변화
+        
+        let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33) // 방향
+        let location = SCNVector3(transform.m41, transform.m42, transform.m43) // 위치
+        
+        let currentPositionOfCamera = SizeMeasurementView.plus(left: orientation , right: location)
+        
+//        SCNTransaction.begin()
+        if let boxNode = self.boxNode{
+            boxNode.position = currentPositionOfCamera
+        }
+        
+        if self.doteNodes.count == 2{
+            doteNodes[1].position = currentPositionOfCamera
+        }
+
+        self.updateScaleFromCameraForNodes(doteNodes, fromPointOfView: pointOfView, useScaling: true)
+        self.updateScaleFromCameraForLine(lineNode, fromPointOfView: pointOfView, useScaling: true)
+    }
+    
+    
+    static func plus (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+        return SCNVector3Make(left.x + right.x, left.y + right.y, left.z + right.z)
+    }
+    
+    
+    
+    // MARK: - Update Scale
+
+    func updateScaleFromCameraForNodes(_ nodes: [SCNNode], fromPointOfView pointOfView: SCNNode, useScaling: Bool) {
+        nodes.forEach { (node) in
+            //1. Get The Current Position Of The Node
+            let positionOfNode = SCNVector3ToGLKVector3(node.worldPosition)
+            //2. Get The Current Position Of The Camera
+            let positionOfCamera = SCNVector3ToGLKVector3(pointOfView.worldPosition)
+            //3. Calculate The Distance From The Node To The Camera
+            let distanceBetweenNodeAndCamera = GLKVector3Distance(positionOfNode, positionOfCamera)
+
+            let a = distanceBetweenNodeAndCamera * 2
+            if(useScaling) {
+                node.simdScale = simd_float3(a,a,a)
+            }
+        }
+        SCNTransaction.flush()
+    }
+    
+    
+    
+    func updateScaleFromCameraForLine(_ node: SCNNode, fromPointOfView pointOfView: SCNNode, useScaling: Bool) {
+        //1. Get The Current Position Of The Node
+        let positionOfNode = SCNVector3ToGLKVector3(node.worldPosition)
+        //2. Get The Current Position Of The Camera
+        let positionOfCamera = SCNVector3ToGLKVector3(pointOfView.worldPosition)
+        //3. Calculate The Distance From The Node To The Camera
+        let distanceBetweenNodeAndCamera = GLKVector3Distance(positionOfNode, positionOfCamera)
+
+        let a = distanceBetweenNodeAndCamera * 2
+        if(useScaling) {
+            node.simdScale = simd_float3(a,1,a)
+        }
+        SCNTransaction.flush()
+    }
+    
+    
+//    func updateScaleFromCameraForText(_ node: SCNNode, fromPointOfView pointOfView: SCNNode, useScaling: Bool) {
+//        //1. Get The Current Position Of The Node
+//        let positionOfNode = SCNVector3ToGLKVector3(node.worldPosition)
+//        //2. Get The Current Position Of The Camera
+//        let positionOfCamera = SCNVector3ToGLKVector3(pointOfView.worldPosition)
+//        //3. Calculate The Distance From The Node To The Camera
+//        let distanceBetweenNodeAndCamera = GLKVector3Distance(positionOfNode, positionOfCamera)
+//
+//        let a = distanceBetweenNodeAndCamera * 2
+//        if(useScaling) {
+//            node.simdScale = simd_float3(a,a,a)
+//        }
+//        SCNTransaction.flush()
+//    }
 }
 
 
@@ -234,9 +377,11 @@ extension SizeMeasurementView : ARCoachingOverlayViewDelegate {
             coachingOverlay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             coachingOverlay.widthAnchor.constraint(equalTo: view.widthAnchor),
             coachingOverlay.heightAnchor.constraint(equalTo: view.heightAnchor)
-            ])
+        ])
         
         coachingOverlay.activatesAutomatically = true
         coachingOverlay.goal = .horizontalPlane
     }
+    
+    
 }
