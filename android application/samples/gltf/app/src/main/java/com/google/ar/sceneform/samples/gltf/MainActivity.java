@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button_list = (Button)findViewById(R.id.button_list);
+        button_list = findViewById(R.id.button_list);
     }
     public void onClickARButton(View v) {
         Intent intent = new Intent(getApplicationContext(),ListARActivity.class); // AR LIST
@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     public void onClickViewerButton(View v) {
         Intent intent = new Intent(getApplicationContext(),List3dActivity.class); // 3D LIST
 //        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.hanssem.store/"));
+        startActivity(intent);
+    }
+    public void onClickTestButton(View v) {
+        Intent intent = new Intent(getApplicationContext(),test.class); // 3D LIST
         startActivity(intent);
     }
 }
