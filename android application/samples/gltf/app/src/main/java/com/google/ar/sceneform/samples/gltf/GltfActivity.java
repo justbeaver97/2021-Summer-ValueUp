@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
@@ -47,9 +48,14 @@ import android.view.MenuItem;
 import com.google.android.filament.gltfio.Animator;
 import com.google.android.filament.gltfio.FilamentAsset;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Session;
+import com.google.ar.core.Trackable;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
@@ -77,6 +83,7 @@ public class GltfActivity extends AppCompatActivity {
     private ArFragment arFragment; // ARCORE 기본 구성 사용
     private Renderable renderable; // sceneform rendering basic class -> rendering 가능한 3D model 생성
     // + gltf file road, rendering -> Modelrenderable의 개체 생성을 처리
+
 
 
     private static class AnimationInstance { // animation을 만들기 위해 사용되는 데이터들
@@ -170,7 +177,6 @@ public class GltfActivity extends AppCompatActivity {
             }
 
         });
-
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         Button button_list = (Button)findViewById(R.id.button_list);
         button_list.setOnClickListener(new View.OnClickListener(){
@@ -285,55 +291,112 @@ public class GltfActivity extends AppCompatActivity {
 
         buildModel(weakActivity, this, fileUri, progress);
 
-        arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
-                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (renderable == null) {
-                        return;
+
+
+
+//        arFragment.setOnTapArPlaneListener( // Plane의 white dot tap하면 function 실행 -> hitresult(x,y), plane, motionEvent -> Anchor 생성 가능
+//                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+//                    if (renderable == null) {
+//                        return;
+//                    }
+//
+//                    // Create the Anchor.
+//                    Anchor anchor = hitResult.createAnchor(); // create anchor
+//                    AnchorNode anchorNode = new AnchorNode(anchor); // Object가 배치되는 영역인 Node를 Anchor 할당 생성 -> AnchorNode
+//                    anchorNode.setParent(arFragment.getArSceneView().getScene()); // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
+//
+//                    // Create the transformable model and add it to the anchor.
+//                    TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
+//                    model.setRenderable(renderable); // set rendering model
+//                    model.getScaleController().setMaxScale(0.015f);
+//                    model.getScaleController().setMinScale(0.005f); // set Scale
+//                    model.setParent(anchorNode); // Anchor node 위에 model set -> 부모 설정
+//
+//                    model.select();
+//
+//                    // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
+//                    FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
+//                    if (filamentAsset.getAnimator().getAnimationCount() > 0) {
+//                        animators.add(new AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // Array set animators -> add Instance
+//                    }
+//
+//                    Color color = colors.get(nextColor); // basic color setting
+//                    nextColor++;
+//                    for (int i = 0; i < renderable.getSubmeshCount(); ++i) {
+//                        Material material = renderable.getMaterial(i);
+//                        material.setFloat4("baseColorFactor", color);
+//                    }
+//                });
+//
+//        arFragment
+//                .getArSceneView()
+//                .getScene()
+//                .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
+//                        frameTime -> {
+//                            Long time = System.nanoTime(); // nanotime 만큼씩
+//                            for (AnimationInstance animator : animators) {
+//                                animator.animator.applyAnimation(
+//                                        animator.index,
+//                                        (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
+//                                                % animator.duration);
+//                                animator.animator.updateBoneMatrices();
+//                            } // set animation
+//                        }
+//        );
+
+        Button addButton = (Button) findViewById(R.id.button_add);
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (renderable == null) {
+                    return;
+                }
+                HitResult hitResult = null;
+                android.graphics.Point pt = new Point(arFragment.getArSceneView().getWidth() / 2, arFragment.getArSceneView().getHeight() /2);
+                List<HitResult> hits;
+                Frame frame = arFragment.getArSceneView().getArFrame();
+                if (frame != null) {
+                    hits = frame.hitTest(pt.x, pt.y);
+                    for (HitResult hit : hits) {
+                        Trackable trackable = hit.getTrackable();
+                        if (trackable instanceof Plane && ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
+                            hitResult = hit;
+                            break;
+                        }
                     }
+                }
+                // Create the Anchor.
+                Anchor anchor = hitResult.createAnchor(); // create anchor
+                AnchorNode anchorNode = new AnchorNode(anchor); // Object가 배치되는 영역인 Node를 Anchor 할당 생성 -> AnchorNode
+                anchorNode.setParent(arFragment.getArSceneView().getScene()); // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
 
-                    // Create the Anchor.
-                    Anchor anchor = hitResult.createAnchor(); // create anchor
-                    AnchorNode anchorNode = new AnchorNode(anchor); // Object가 배치되는 영역인 Node를 Anchor 할당 생성 -> AnchorNode
-                    anchorNode.setParent(arFragment.getArSceneView().getScene()); // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
+                // Create the transformable model and add it to the anchor.
+                TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
+                model.setRenderable(renderable); // set rendering model
+                model.getScaleController().setMaxScale(0.015f);
+                model.getScaleController().setMinScale(0.005f); // set Scale
+                model.setParent(anchorNode); // Anchor node 위에 model set -> 부모 설정
 
-                    // Create the transformable model and add it to the anchor.
-                    TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
-                    model.setRenderable(renderable); // set rendering model
-                    model.getScaleController().setMaxScale(0.015f);
-                    model.getScaleController().setMinScale(0.005f); // set Scale
-                    model.setParent(anchorNode); // Anchor node 위에 model set -> 부모 설정
+                model.select();
 
-                    model.select();
+                // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
+                FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
+                if (filamentAsset.getAnimator().getAnimationCount() > 0) {
+                    animators.add(new AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // Array set animators -> add Instance
+                }
 
-                    // Filament -> android, iOS 등 WebGL을 위한 실시간 Rendering engine
-                    FilamentAsset filamentAsset = model.getRenderableInstance().getFilamentAsset(); // filamentAsset = filament에서 사용할 3D 모델(.glb file) 정의
-                    if (filamentAsset.getAnimator().getAnimationCount() > 0) {
-                        animators.add(new AnimationInstance(filamentAsset.getAnimator(), 0, System.nanoTime())); // Array set animators -> add Instance
-                    }
+                Color color = colors.get(nextColor); // basic color setting
+                nextColor++;
+                for (int i = 0; i < renderable.getSubmeshCount(); ++i) {
+                    Material material = renderable.getMaterial(i);
+                    material.setFloat4("baseColorFactor", color);
+                }
+            }
 
-                    Color color = colors.get(nextColor); // basic color setting
-                    nextColor++;
-                    for (int i = 0; i < renderable.getSubmeshCount(); ++i) {
-                        Material material = renderable.getMaterial(i);
-                        material.setFloat4("baseColorFactor", color);
-                    }
-                });
+        });
 
-        arFragment
-                .getArSceneView()
-                .getScene()
-                .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
-                        frameTime -> {
-                            Long time = System.nanoTime(); // nanotime 만큼씩
-                            for (AnimationInstance animator : animators) {
-                                animator.animator.applyAnimation(
-                                        animator.index,
-                                        (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
-                                                % animator.duration);
-                                animator.animator.updateBoneMatrices();
-                            } // set animation
-                        });
     }
+
 
     public void buildModel(WeakReference<GltfActivity> weakActivity,Context context, String uri, ProgressBar progress){
         progress.setVisibility(View.VISIBLE);

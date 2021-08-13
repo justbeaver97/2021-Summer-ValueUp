@@ -5,8 +5,10 @@ package com.google.ar.sceneform.samples.gltf;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.camera2.params.SessionConfiguration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,14 +18,18 @@ import android.widget.Toast;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
 import com.google.ar.core.Pose;
+import com.google.ar.core.Session;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ShapeFactory;
+import com.google.ar.sceneform.rendering.Texture;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
@@ -36,6 +42,7 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
 
     private ArFragment arFragment;
     private Anchor[] currentAnchor = new Anchor[2]; // anchor array
+    private Vector3[] currentVector = new Vector3[2];
     private AnchorNode[] currentAnchorNode = new AnchorNode[2];
     // anchorNode 배열 선언 (Node : 하나의 object가 차지하는 영역, 즉 anchorNode는 하나의 anchor object가 차지하는 영역)
     private TextView tvDistance; // Distance 보여주는 textview
@@ -65,12 +72,14 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
 
             // Creating Anchor (Anchor : fixed location and orientation in real world -> rendering 3D model in Anchor)
             Anchor anchor = hitResult.createAnchor();
+            Vector3 vec = new Vector3(hitResult.getHitPose().qx(), hitResult.getHitPose().qy(), hitResult.getHitPose().qz());
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene()); // anchorNode Parrent -> Scene (plane)
 
             clearAnchor(); // function -> cnt == 2일경우 initialize
 
             currentAnchor[cnt] = anchor;
+            currentVector[cnt] = vec;
             currentAnchorNode[cnt] = anchorNode; // anchor 생성마다 array 할당
 
             cnt++; // anchor count ++
@@ -84,6 +93,8 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
         });
 
     }
+
+    
 
     public boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // requirements checked
 
@@ -105,7 +116,7 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
         MaterialFactory.makeTransparentWithColor(this, new Color(android.graphics.Color.RED))
                 .thenAccept(
                         material -> {
-                            Vector3 vector3 = new Vector3(0.05f, 0.01f, 0.01f);
+                            Vector3 vector3 = new Vector3(0.02f, 0.02f, 0.02f);
                             cubeRenderable = ShapeFactory.makeCube(vector3, Vector3.zero(), material);
                             cubeRenderable.setShadowCaster(false);
                             cubeRenderable.setShadowReceiver(false);
@@ -116,6 +127,7 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
         if(cnt == 2){ // tap hitresult가 2개 초과일 수 없음
             for(int i=0; i<2; i++){
                 currentAnchor[i] = null;
+                currentVector[i] = null;
                 if (currentAnchorNode[i] != null) {
                     arFragment.getArSceneView().getScene().removeChild(currentAnchorNode[i]);
                     currentAnchorNode[i].getAnchor().detach();
@@ -146,6 +158,8 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
 
             ///Compute distance.
             float distanceMeters = (float) Math.sqrt(dx * dx + dy * dy + dz * dz); // distance
+
+
             tvDistance.setText("측정된 길이: " + (float)Math.round(distanceMeters*100) + " cm");
 
             Intent placeIntent = new Intent(DistanceActivity.this, PlaceActivity.class); // Intent -> PlaceActivity
@@ -158,4 +172,6 @@ public class DistanceActivity extends AppCompatActivity implements Scene.OnUpdat
 
         }
     }
+
+
 }
