@@ -23,23 +23,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.ArraySet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -56,6 +50,7 @@ import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.Material;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
@@ -64,6 +59,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+//import android.widget.ImageView;
+
 public class GltfActivity extends AppCompatActivity {
     private static final String TAG = GltfActivity.class.getSimpleName(); // log 띄우기 위해
     private static final double MIN_OPENGL_VERSION = 3.0;
@@ -71,7 +70,10 @@ public class GltfActivity extends AppCompatActivity {
 
     private ArFragment arFragment; // ARCORE 기본 구성 사용
     private Renderable renderable; // sceneform rendering basic class -> rendering 가능한 3D model 생성
-    // + gltf file road, rendering -> Modelrenderable의 개체 생성을 처리
+    private AnchorNode currentAnchorNode;
+//    // + gltf file road, rendering -> Modelrenderable의 개체 생성을 처리
+//    private ViewRenderable viewRenderable;
+//    public boolean bool = false;
 
 
 
@@ -113,19 +115,16 @@ public class GltfActivity extends AppCompatActivity {
     // CompletableFuture requires api level 24
     // FutureReturnValueIgnored is not valid
     protected void onCreate(Bundle savedInstanceState) {
+        WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
+        // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
+        // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
+
         super.onCreate(savedInstanceState);
 
 
         setContentView(R.layout.activity_ux);
         ProgressBar progress = findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
-
-        // toolbar 사용 설정
-
-
-
-
-
 
 
         if (!checkIsSupportedDeviceOrFinish(this)) {
@@ -165,7 +164,6 @@ public class GltfActivity extends AppCompatActivity {
         int length = (int) intent.getSerializableExtra("size"); // get items -> key, size(length)
 
         Button button_distance = findViewById(R.id.button_distance);
-        // button Click -> setOnClickListener
         button_distance.setOnClickListener(v -> {
             Toast.makeText(getApplicationContext(), "거리 측정페이지입니다.", Toast.LENGTH_LONG).show();
             Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class); // 거리측정페이지 : DistanceActivity
@@ -176,10 +174,6 @@ public class GltfActivity extends AppCompatActivity {
         Button button_list = findViewById(R.id.button_list);
         button_list.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
-
-        WeakReference<GltfActivity> weakActivity = new WeakReference<>(this); // Weakreference -> MemoryLeak X
-        // 다른 Class에서 activity를 포함한 객체를 참조하거나, 별도의 스레드에서 view, activity를 참조하고 있는 경우, 해당 참조를 주어 메모리 누수를 방지한다.
-        // sceneform의 ModelAnimator은 약한 참조만을 이용한다. 일반 soft나 strongreference를 사용하기 위해서는 해당 객체를 Node에 추가해야 한다.
 
         NavigationView navigationView = findViewById(R.id.nav);
         // List에서 상품 선택시
@@ -275,18 +269,26 @@ public class GltfActivity extends AppCompatActivity {
 
 
         Button button_refresh = findViewById(R.id.button_refresh);
+        ImageView imageView = findViewById(R.id.squareImage);
         // anchor 초기화
 
 
         button_refresh.setOnClickListener(v -> {
-                    weakActivity.get().renderable = null;
                     if (arFragment.getArSceneView().getScene().getChildren() != null) {
                         System.out.println("refresh");
-                        for (Node i : arFragment.getArSceneView().getScene().getChildren()){
-                            i = null;
+
+                        if (currentAnchorNode != null)
+                        {
+                            arFragment.getArSceneView().getScene().removeChild(currentAnchorNode);
+                            assert currentAnchorNode.getAnchor() != null;
+                            currentAnchorNode.getAnchor().detach();
+                            currentAnchorNode.setParent(null);
+                            currentAnchorNode = null;
                         }
-                    } else
-                        return;
+
+                        arFragment.onStart();
+                    }
+                   imageView.setVisibility(View.VISIBLE);
                 }
         );
 
@@ -325,21 +327,34 @@ public class GltfActivity extends AppCompatActivity {
 //                    }
 //                });
 //
-//        arFragment
-//                .getArSceneView()
-//                .getScene()
-//                .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
-//                        frameTime -> {
-//                            Long time = System.nanoTime(); // nanotime 만큼씩
-//                            for (AnimationInstance animator : animators) {
-//                                animator.animator.applyAnimation(
-//                                        animator.index,
-//                                        (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
-//                                                % animator.duration);
-//                                animator.animator.updateBoneMatrices();
-//                            } // set animation
-//                        }
-//        );
+
+
+
+        arFragment
+                .getArSceneView()
+                .getScene()
+                .addOnUpdateListener( // Scene이 update되기 직전 frame 당 한번 호출될 콜백함수
+                        frameTime -> {
+                            Long time = System.nanoTime(); // nanotime 만큼
+//
+//                            addToScene();
+//                            createViewRenderable(weakActivity);
+//                            System.out.println(bool);
+//                            if (bool) {
+//                                imageView.setVisibility(View.INVISIBLE);
+//                            }
+
+//                            System.out.println(arFragment.getArSceneView().getScene().getCamera().getWorldRotation().w);
+
+                            for (AnimationInstance animator : animators) {
+                                animator.animator.applyAnimation(
+                                        animator.index,
+                                        (float) ((time - animator.startTime) / (double) SECONDS.toNanos(1))
+                                                % animator.duration);
+                                animator.animator.updateBoneMatrices();
+                            } // set animation
+                        }
+        );
 
         Button addButton = findViewById(R.id.button_add);
         addButton.setOnClickListener(v -> {
@@ -367,6 +382,8 @@ public class GltfActivity extends AppCompatActivity {
                 AnchorNode anchorNode = new AnchorNode(anchor); // Object가 배치되는 영역인 Node를 Anchor 할당 생성 -> AnchorNode
                 anchorNode.setParent(arFragment.getArSceneView().getScene()); // (getScene : 장면 반환 / getArSceneView : 장면 랜더링(arsceneview) 반환) -> parentNode로 set
 
+                currentAnchorNode = anchorNode;
+
                 // Create the transformable model and add it to the anchor.
                 TransformableNode model = new TransformableNode(arFragment.getTransformationSystem()); // TransformableNode -> 선택, 변환, 회전, 크기 조정 가능한 Node
                 model.setRenderable(renderable); // set rendering model
@@ -390,12 +407,17 @@ public class GltfActivity extends AppCompatActivity {
                     Material material = renderable.getMaterial(i);
                     material.setFloat4("baseColorFactor", color);
                 }
+                Toast myToast = Toast.makeText(this.getApplicationContext(), "가구가 배치되었습니다.", Toast.LENGTH_SHORT);
+                myToast.show();
+                imageView.setVisibility(View.INVISIBLE);
             }catch (Exception e){
                 Toast myToast = Toast.makeText(this.getApplicationContext(), "평면이 인식된 곳에서 버튼을 눌러주세요.", Toast.LENGTH_SHORT);
                 myToast.show();
             }
         });
     }
+
+
 
 
     public void buildModel(WeakReference<GltfActivity> weakActivity,Context context, String uri, ProgressBar progress){
@@ -424,12 +446,6 @@ public class GltfActivity extends AppCompatActivity {
     }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) { // version check function
-        if (Build.VERSION.SDK_INT < VERSION_CODES.N) {
-            Log.e(TAG, "Sceneform requires Android N or later");
-            Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();
-            activity.finish();
-            return false;
-        }
         String openGlVersionString =
                 ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
                         .getDeviceConfigurationInfo()
