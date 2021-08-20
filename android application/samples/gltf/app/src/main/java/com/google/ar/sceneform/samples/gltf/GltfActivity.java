@@ -19,7 +19,6 @@ package com.google.ar.sceneform.samples.gltf;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -112,7 +111,7 @@ public class GltfActivity extends AppCompatActivity {
 
     private String fileUri;
 
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
