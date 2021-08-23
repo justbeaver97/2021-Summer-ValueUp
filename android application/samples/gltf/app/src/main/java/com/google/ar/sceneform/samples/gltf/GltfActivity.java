@@ -113,6 +113,7 @@ public class GltfActivity extends AppCompatActivity {
     private String fileUri;
 
     private ProgressDialog progressDialog;
+    final String[] Glburi = new String[22];
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -135,7 +136,6 @@ public class GltfActivity extends AppCompatActivity {
             return;
         } // 지원하는 OpenGL 버전(3.0)이 적합한지, android sdk 버전이 맞는지 확인
 
-        final String[] Glburi = new String[22];
         Glburi[0] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/668317.glb";
         Glburi[1] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/668318.glb";
         Glburi[2] = "https://raw.githubusercontent.com/justbeaver97/2021-Summer-ValueUpProject/master/test_asset/681946.glb";
@@ -165,13 +165,14 @@ public class GltfActivity extends AppCompatActivity {
         int key = (int) intent.getSerializableExtra("key");
         fileUri = Glburi[key];
 
-        int length = (int) intent.getSerializableExtra("size"); // get items -> key, size(length)
+        int size = (int) intent.getSerializableExtra("size"); // get items -> key, size(length)
 
         Button button_distance = findViewById(R.id.button_distance);
         button_distance.setOnClickListener(v -> {
             Toast.makeText(getApplicationContext(), "거리 측정페이지입니다.", Toast.LENGTH_LONG).show();
             Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class); // 거리측정페이지 : DistanceActivity
-            pageIntent.putExtra("length", length); // length 전달
+            pageIntent.putExtra("size", size); // length 전달
+            pageIntent.putExtra("key", key);
             startActivity(pageIntent);
             finish();
         });

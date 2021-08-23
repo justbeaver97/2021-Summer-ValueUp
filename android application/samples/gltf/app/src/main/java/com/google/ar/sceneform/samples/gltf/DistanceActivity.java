@@ -72,9 +72,15 @@ public class DistanceActivity extends AppCompatActivity implements com.google.ar
 
         initModel();
 
+        Intent intent = getIntent();
+        int key = (int) intent.getSerializableExtra("key");
+        int size = (int) intent.getSerializableExtra("size");
+
         Button button_back = findViewById(R.id.button_back);
         button_back.setOnClickListener(v -> {
             Intent pageIntent = new Intent(DistanceActivity.this, GltfActivity.class);
+            pageIntent.putExtra("key", key);
+            pageIntent.putExtra("size", size);
             startActivity(pageIntent);
             finish();
         });
