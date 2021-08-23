@@ -36,7 +36,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.filament.gltfio.Animator;
@@ -128,9 +127,6 @@ public class GltfActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_ux);
-//        ProgressBar progress = findViewById(R.id.progress);
-//
-//        progress.setVisibility(View.INVISIBLE);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -177,11 +173,25 @@ public class GltfActivity extends AppCompatActivity {
             Intent pageIntent = new Intent(GltfActivity.this, DistanceActivity.class); // 거리측정페이지 : DistanceActivity
             pageIntent.putExtra("length", length); // length 전달
             startActivity(pageIntent);
+            finish();
         });
+
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         Button button_list = findViewById(R.id.button_list);
         button_list.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+            }
+        };
 
         NavigationView navigationView = findViewById(R.id.nav);
         // List에서 상품 선택시
@@ -191,17 +201,6 @@ public class GltfActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();
 
             progressDialog.show();
-
-            final Handler handler = new Handler();
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    if(progressDialog.isShowing()){
-                        progressDialog.dismiss();
-                    }
-                }
-            };
-
 
             int id = menuItem.getItemId();
             String title = menuItem.getTitle().toString();
@@ -276,15 +275,7 @@ public class GltfActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "현재 상품 : " + title, Toast.LENGTH_LONG).show();
 
-
-            progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    handler.removeCallbacks(runnable);
-                }
-            });
-
-            handler.postDelayed(runnable, 7000);
+            handler.postDelayed(runnable, 3000);
 
             return true;
         });
@@ -295,7 +286,17 @@ public class GltfActivity extends AppCompatActivity {
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment); // ux_fragment -> fragment manager 불러옴 -> ARFragment
 
+        progressDialog.show();
         buildModel(weakActivity, this, fileUri );
+
+        progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                handler.removeCallbacks(runnable);
+            }
+        });
+
+        handler.postDelayed(runnable, 3000);
 
         Button button_refresh = findViewById(R.id.button_refresh);
         ImageView imageView = findViewById(R.id.squareImage);

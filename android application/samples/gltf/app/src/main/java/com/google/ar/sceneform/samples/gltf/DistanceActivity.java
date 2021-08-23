@@ -6,6 +6,7 @@ package com.google.ar.sceneform.samples.gltf;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,8 +70,15 @@ public class DistanceActivity extends AppCompatActivity implements com.google.ar
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         tvDistance = findViewById(R.id.tvDistance);
 
-
         initModel();
+
+        Button button_back = findViewById(R.id.button_back);
+        button_back.setOnClickListener(v -> {
+            Intent pageIntent = new Intent(DistanceActivity.this, GltfActivity.class);
+            startActivity(pageIntent);
+            finish();
+        });
+
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             if (cubeRenderable == null)
                 return;
@@ -158,8 +167,6 @@ public class DistanceActivity extends AppCompatActivity implements com.google.ar
         dropdown.setSelection(0);
 
     }
-
-
 
     public boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
 
